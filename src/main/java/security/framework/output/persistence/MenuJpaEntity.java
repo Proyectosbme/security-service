@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigInteger;
-//prueba
+//prueba bryan
 @Entity
 @Table(name = "menus", schema = "kafka")
 @Getter
