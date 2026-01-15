@@ -1,5 +1,6 @@
 package security.framework.output.persistence;
 
+import security.aplication.dto.FiltroMenu;
 import security.aplication.port.output.MenuRepository;
 import security.dominio.entidades.Menu;
 import security.framework.output.mapper.MenuOutputMapper;
@@ -70,5 +71,12 @@ public class MenuRepositoryAdapter implements MenuRepository {
                    return true;
                })
                .orElse(false);
+    }
+
+    @Override
+    public List<Menu> buscarMenuPorFiltros(FiltroMenu filtroMenu) {
+        return menuJpaRepository.buscarMenusPorFiltros(filtroMenu).stream().map(
+                (menuOutputMapper::toDomain)
+                        ).toList();
     }
 }

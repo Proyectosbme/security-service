@@ -1,5 +1,6 @@
 package security.framework.input.controller;
 
+import security.aplication.dto.FiltroMenu;
 import security.aplication.port.input.MenuInputPort;
 import security.dominio.entidades.Menu;
 import security.framework.input.dto.MenuRequestDTO;
@@ -8,6 +9,8 @@ import security.framework.input.mapper.MenuInputMapper;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
+
+import java.util.List;
 
 @Path("/menu")
 public class MenuController {
@@ -34,6 +37,21 @@ public class MenuController {
                 .build();
     }
 
+    @POST
+    @Path("/buscar")
+    public Response buscarPorFiltros(MenuRequestDTO dto) {
+
+
+        FiltroMenu filtro = menuInputMapper.toFiltro(dto);
+
+        List<Menu> menus = menuInputPort.buscarPorFiltros(filtro);
+
+        List<MenuResponseDTO> response = menus.stream()
+                .map(menuInputMapper::toResponseDto)
+                .toList();
+
+        return Response.ok(response).build();
+    }
     @GET
     @Path("/idmenu/{idmenu}")
     public MenuResponseDTO buscarPorId(@PathParam("idmenu") Long id) {

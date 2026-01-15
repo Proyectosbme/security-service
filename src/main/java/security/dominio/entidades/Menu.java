@@ -145,7 +145,7 @@ public class Menu {
             throw new SecurityValidationException("nombre", "Ingrese un nombre valido");
         }
         if (jerarquia == null || jerarquia.compareTo(BigInteger.ZERO)<0) {
-            throw new SecurityValidationException("jerarquia", "No estar vacia o ser menor a cero");
+            throw new SecurityValidationException("jerarquia", "No puede estar vacia o ser menor a cero");
         }
 
         if (orden == null || orden.compareTo(BigInteger.ZERO)<0) {

@@ -1,5 +1,6 @@
 package security.aplication.port.output;
 
+import security.aplication.dto.FiltroMenu;
 import security.dominio.entidades.Menu;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface MenuRepository {
     boolean deleteById(Long id);
     Menu update(Long id,Menu menu);
     void delete(Long id);
+    List<Menu> buscarMenuPorFiltros(FiltroMenu filtroMenu);
 }

@@ -1,5 +1,6 @@
 package security.aplication.port.input;
 
+import security.aplication.dto.FiltroMenu;
 import security.dominio.entidades.Menu;
 
 import java.util.List;
@@ -10,6 +11,7 @@ public interface MenuInputPort {
     void eliminar(Long id);
     List<Menu> obtenerTodas();
     Menu acualizar(Long id,Menu menu);
+    List<Menu> buscarPorFiltros(FiltroMenu filtroMenu);
 
 
 }

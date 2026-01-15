@@ -1,5 +1,6 @@
 package security.framework.input.mapper;
 
+import security.aplication.dto.FiltroMenu;
 import security.dominio.entidades.Menu;
 import security.dominio.vo.Estado;
 import security.framework.input.dto.MenuRequestDTO;
@@ -35,6 +36,9 @@ public interface MenuInputMapper {
     @Mapping(target = "estado", source = "estado", qualifiedByName = "estadoToDescripcion")
     MenuResponseDTO toResponseDto(Menu menu);
 
+
+
+    FiltroMenu toFiltro(MenuRequestDTO dto);
     // =====================
     // CONSTRUCTORES PARCIALES (INPUT)
     // =====================
