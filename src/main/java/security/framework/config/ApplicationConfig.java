@@ -64,12 +64,24 @@ public class ApplicationConfig {
      * Produce instancia singleton de MenuInputPort (MenuService).
      * Anotada con @Produces para inyección en CDI.
      * 
-     * @return MenuService configurado con sus repositorios
+     * Patrón Hexagonal:
+     * - MenuService implementa MenuInputPort (puerto de entrada)
+     * - Depende de MenuRepository, ModuloRepository, PantallaRepository (puertos de salida)
+     * - Crea instancias de casos de uso con todas sus dependencias
+     * 
+     * Casos de Uso:
+     * - CrearMenuUseCase: Valida Pantalla, Módulo, MenuPadre y crea menú
+     * - BuscarMenuPorIdUseCase: Busca menú por ID
+     * - ActualizarMenuUseCase: Valida Pantalla, Módulo, MenuPadre y actualiza menú
+     * - EliminarMenuUseCase: Elimina menú por ID
+     * - BuscarMenuPorFiltros: Búsqueda avanzada con criterios
+     * 
+     * @return MenuService configurado con sus repositorios y casos de uso
      */
     @Produces
     @ApplicationScoped
     public MenuInputPort menuService() {
-        return new MenuService(menuRepository,moduloRepository);
+        return new MenuService(menuRepository, moduloRepository, pantallaRepository);
     }
 
     /**
