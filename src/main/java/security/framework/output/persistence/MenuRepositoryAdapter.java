@@ -3,6 +3,7 @@ package security.framework.output.persistence;
 import security.aplication.dto.FiltroMenu;
 import security.aplication.port.output.MenuRepository;
 import security.dominio.entidades.Menu;
+import security.dominio.exceptions.SecurityNotFoundException;
 import security.framework.output.mapper.MenuOutputMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -114,21 +115,33 @@ public class MenuRepositoryAdapter implements MenuRepository {
      * 
      * Flujo:
      * 1. Busca MenuJpaEntity existente por ID
-     * 2. Aplica cambios usando menuOutputMapper.applyToEntity()
-     * 3. Convierte MenuJpaEntity actualizado → Menu (dominio)
+     * 2. Si no existe, lanza SecurityNotFoundException
+     * 3. Aplica cambios usando menuOutputMapper.applyToEntity()
+     * 4. Persiste cambios en BD usando persist()
+     * 5. Convierte MenuJpaEntity actualizado → Menu (dominio)
      * 
      * @param id ID del menú a actualizar
      * @param menu Menu con nuevos datos
      * @return Menu actualizado con cambios aplicados
-     * @throws RuntimeException si no existe menú con ese ID
+     * @throws SecurityNotFoundException si no existe menú con ese ID
      */
     @Override
     public Menu update(Long id, Menu menu) {
+        // 1. Buscar menú en BD
         MenuJpaEntity entity = menuJpaRepository.findById(id);
+        
+        // 2. Verificar que existe
         if (entity == null) {
-            throw new RuntimeException("Menú no encontrado");
+            throw new SecurityNotFoundException("Menú no encontrado con ID: " + id);
         }
+        
+        // 3. Aplicar cambios
         menuOutputMapper.applyToEntity(menu, entity);
+        
+        // 4. Persistir cambios (JPA hace merge automáticamente)
+        menuJpaRepository.persist(entity);
+        
+        // 5. Convertir a dominio y retornar
         return menuOutputMapper.toDomain(entity);
     }
 

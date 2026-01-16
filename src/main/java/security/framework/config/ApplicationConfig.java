@@ -3,14 +3,21 @@ package security.framework.config;
 import security.aplication.port.input.MenuInputPort;
 import security.aplication.port.input.ModuloInputPort;
 import security.aplication.port.input.PantallaInputPort;
+import security.aplication.port.input.PerfilInputPort;
 import security.aplication.port.output.MenuRepository;
 import security.aplication.port.output.ModuloRepository;
 import security.aplication.port.output.PantallaRepository;
+import security.aplication.port.output.PerfilRepository;
 import security.aplication.service.MenuService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 import security.aplication.service.ModuloService;
 import security.aplication.service.PantallaService;
+import security.aplication.service.PerfilService;
+import security.aplication.usecase.ActualizarPerfilUseCase;
+import security.aplication.usecase.BuscarPerfilPorIdUseCase;
+import security.aplication.usecase.CrearPerfilUseCase;
+import security.aplication.usecase.EliminarPerfilUseCase;
 
 /**
  * Configuración de Aplicación: ApplicationConfig
@@ -34,6 +41,8 @@ public class ApplicationConfig {
     private final ModuloRepository moduloRepository;
     /** Repositorio de pantallas inyectado por CDI */
     private final PantallaRepository pantallaRepository;
+    /** Repositorio de perfiles inyectado por CDI */
+    private final PerfilRepository perfilRepository;
 
     /**
      * Constructor con inyección de repositorios.
@@ -42,11 +51,13 @@ public class ApplicationConfig {
      * @param menuRepository Implementación del repositorio de menús
      * @param moduloRepository Implementación del repositorio de módulos
      * @param pantallaRepository Implementación del repositorio de pantallas
+     * @param perfilRepository Implementación del repositorio de perfiles
      */
-    public ApplicationConfig(MenuRepository menuRepository, ModuloRepository moduloRepository, PantallaRepository pantallaRepository) {
+    public ApplicationConfig(MenuRepository menuRepository, ModuloRepository moduloRepository, PantallaRepository pantallaRepository, PerfilRepository perfilRepository) {
         this.menuRepository = menuRepository;
         this.moduloRepository = moduloRepository;
         this.pantallaRepository = pantallaRepository;
+        this.perfilRepository = perfilRepository;
     }
 
     /**
@@ -88,5 +99,33 @@ public class ApplicationConfig {
     @ApplicationScoped
     public PantallaInputPort pantallaService() {
         return new PantallaService(pantallaRepository);
+    }
+
+    /**
+     * Produce instancia singleton de PerfilInputPort (PerfilService).
+     * Anotada con @Produces para inyección en CDI.
+     * 
+     * Patrón Hexagonal:
+     * - PerfilService implementa PerfilInputPort (puerto de entrada)
+     * - Depende de PerfilRepository (puerto de salida)
+     * - Se inyecta en PerfilController y en clientes del servicio
+     * 
+     * Casos de Uso:
+     * - CrearPerfilUseCase: Valida y crea nuevo perfil
+     * - BuscarPerfilPorIdUseCase: Busca perfil por ID
+     * - ActualizarPerfilUseCase: Actualiza perfil existente
+     * - EliminarPerfilUseCase: Elimina perfil por ID
+     * 
+     * @return PerfilService configurado con sus casos de uso
+     */
+    @Produces
+    @ApplicationScoped
+    public PerfilInputPort perfilService() {
+        return new PerfilService(
+            new CrearPerfilUseCase(perfilRepository),
+            new BuscarPerfilPorIdUseCase(perfilRepository),
+            new ActualizarPerfilUseCase(perfilRepository),
+            new EliminarPerfilUseCase(perfilRepository)
+        );
     }
 }
