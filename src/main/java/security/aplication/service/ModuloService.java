@@ -7,10 +7,19 @@ import security.dominio.entidades.Modulo;
 
 import java.util.List;
 
+/**
+ * Servicio de Aplicación: ModuloService
+ * Implementa ModuloInputPort y orquesta casos de uso de módulos.
+ * Patrón: Service Locator / Facade
+ * Nota: Métodos pendientes de implementación (retornan null/vacío)
+ */
 public class ModuloService implements ModuloInputPort {
 
     private final CrearModuloUseCase crearModuloUseCase;
 
+    /**
+     * Constructor que inyecta dependencia del repositorio.
+     */
     public ModuloService(ModuloRepository moduloRepository) {
         this.crearModuloUseCase = new CrearModuloUseCase(moduloRepository);
     }
@@ -22,21 +31,21 @@ public class ModuloService implements ModuloInputPort {
 
     @Override
     public Modulo buscarPorId(Long id) {
-        return null;
+        return null; // TODO: Implementar en próxima versión
     }
 
     @Override
     public void eliminar(Long id) {
-
+        // TODO: Implementar eliminación de módulos
     }
 
     @Override
     public List<Modulo> obtenerTodas() {
-        return null;
+        return null; // TODO: Implementar en próxima versión
     }
 
     @Override
     public Modulo acualizar(Long id, Modulo Modulo) {
-        return null;
+        return null; // TODO: Implementar actualización de módulos
     }
 }

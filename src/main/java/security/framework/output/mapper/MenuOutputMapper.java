@@ -221,16 +221,44 @@ public interface MenuOutputMapper {
      * @param modulo Objeto Modulo del dominio
      * @return Identificador del módulo o {@code null} si no existe
      */
+    /**
+     * Extrae el identificador de un Modulo de dominio.
+     *
+     * @param modulo Objeto Modulo del dominio
+     * @return Identificador del módulo o {@code null} si no existe
+     */
     @Named("moduloToId")
     default BigInteger moduloToId(Modulo modulo) {
         return modulo != null ? modulo.getId(): null;
     }
 
+    /**
+     * Extrae el identificador de un Menu (menú padre) de dominio.
+     * 
+     * <p>
+     * Se utiliza durante la conversión de dominio a JPA para persistir
+     * la relación jerárquica mediante el ID del menú padre.
+     * </p>
+     *
+     * @param menu Objeto Menu del dominio
+     * @return Identificador del menú o {@code null} si no existe
+     */
     @Named("menuToId")
     default BigInteger menuToId(Menu menu) {
         return menu != null ? menu.getMenuId() : null;
     }
 
+    /**
+     * Convierte un Estado de dominio a su código numérico para persistencia.
+     * 
+     * <p>
+     * El Estado es un Value Object que encapsula un código numérico.
+     * Este método extrae ese código para almacenarlo en BD.
+     * </p>
+     *
+     * @param estado Enum Estado (ACTIVO, INACTIVO)
+     * @return Código numérico del estado (1=ACTIVO, 0=INACTIVO) o {@code null}
+     */
     @Named("estadoToCodigoJpa")
     default BigInteger estadoToCodigoJpa(Estado estado) {
         return estado != null
@@ -238,7 +266,17 @@ public interface MenuOutputMapper {
                 : null;
     }
 
-
+    /**
+     * Convierte un código numérico de BD a Estado de dominio.
+     * 
+     * <p>
+     * Transforma el código persistido (1, 0) al enum Estado correspondiente.
+     * Complemento inverso de estadoToCodigoJpa().
+     * </p>
+     *
+     * @param codigo Código numérico del estado desde BD (1=ACTIVO, 0=INACTIVO)
+     * @return Enum Estado o {@code null} si código es nulo
+     */
     @Named("codigoToEstado")
     default Estado codigoToEstado(BigInteger codigo) {
         return codigo != null
