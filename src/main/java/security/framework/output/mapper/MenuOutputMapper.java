@@ -157,7 +157,7 @@ public interface MenuOutputMapper {
     default Pantalla pantallaFromId(BigInteger codPantalla) {
         if (codPantalla == null) return null;
         Pantalla p = new Pantalla();
-        p.setCodigo(codPantalla);
+        p.setId(codPantalla.longValue());
         return p;
     }
 
@@ -212,7 +212,7 @@ public interface MenuOutputMapper {
 
     @Named("pantallaToId")
     default BigInteger pantallaToId(Pantalla pantalla) {
-        return pantalla != null ? pantalla.getCodigo(): null;
+        return pantalla != null ? BigInteger.valueOf(pantalla.getId()): null;
     }
 
     /**

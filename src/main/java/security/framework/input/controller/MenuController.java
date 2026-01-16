@@ -242,4 +242,4 @@ public class MenuController {
         Menu datosNuevos = menuInputMapper.toDomain(dto);
         Menu personaActualizada = menuInputPort.acualizar(id,datosNuevos);
         return menuInputMapper.toResponseDto(personaActualizada);
-    }
+    }}

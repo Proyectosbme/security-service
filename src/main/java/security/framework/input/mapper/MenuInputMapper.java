@@ -105,7 +105,7 @@ public interface MenuInputMapper {
     default security.dominio.entidades.Pantalla pantallaFromId(BigInteger id) {
         if (id == null) return null;
         security.dominio.entidades.Pantalla p = new security.dominio.entidades.Pantalla();
-        p.setCodigo(id);
+        p.setId(id.longValue());
         return p;
     }
 
@@ -176,7 +176,7 @@ public interface MenuInputMapper {
      */
     @Named("pantallaToId")
     default BigInteger pantallaToId(security.dominio.entidades.Pantalla pantalla) {
-        return pantalla != null ? pantalla.getCodigo() : null;
+        return pantalla != null ? BigInteger.valueOf(pantalla.getId()) : null;
     }
 
     /**

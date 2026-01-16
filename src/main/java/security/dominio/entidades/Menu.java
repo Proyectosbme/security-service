@@ -136,6 +136,63 @@ public class Menu {
     }
 
     /**
+     * Valida los datos del menú según reglas de negocio.
+     * 
+     * Validaciones realizadas:
+     * - Nombre no puede estar vacío o nulo
+     * - Jerarquía no puede ser nula ni negativa
+     * - Orden no puede ser nula ni negativa
+     * - Módulo no puede ser nulo
+     * - Estado no puede ser nulo
+     * - Si hay pantalla asociada, el menú padre no es obligatorio pero la jerarquía sí
+     * 
+     * @throws SecurityValidationException si alguna validación falla
+     */
+    public void validar() {
+        // 1. Validar nombre
+        if (nombre == null || nombre.isBlank()) {
+            throw new SecurityValidationException("El nombre del menú no puede estar vacío");
+        }
+        
+        // 2. Validar jerarquía
+        if (jerarquia == null) {
+            throw new SecurityValidationException("La jerarquía del menú no puede ser nula");
+        }
+        if (jerarquia.compareTo(BigInteger.ZERO) < 0) {
+            throw new SecurityValidationException("La jerarquía del menú no puede ser negativa");
+        }
+        
+        // 3. Validar orden
+        if (orden == null) {
+            throw new SecurityValidationException("El orden del menú no puede ser nulo");
+        }
+        if (orden.compareTo(BigInteger.ZERO) < 0) {
+            throw new SecurityValidationException("El orden del menú no puede ser negativo");
+        }
+        
+        // 4. Validar módulo (obligatorio)
+        if (modulo == null) {
+            throw new SecurityValidationException("El menú debe tener un módulo asociado");
+        }
+        
+        // 5. Validar estado (obligatorio)
+        if (estado == null) {
+            throw new SecurityValidationException("El estado del menú no puede ser nulo");
+        }
+        
+        // 6. Pantalla y menuPadre pueden ser nulos (opcionales)
+        // pero si hay pantalla, conviene validar que module existe
+        if (pantalla != null && pantalla.getModulo() == null) {
+            throw new SecurityValidationException("La pantalla asociada debe tener un módulo válido");
+        }
+        
+        // 7. Si es submenú (menuPadre no nulo), validar que existe
+        if (menuPadre != null && menuPadre.getMenuId() == null) {
+            throw new SecurityValidationException("El menú padre debe tener un ID válido");
+        }
+    }
+
+    /**
      * Obtiene el nombre del menú.
      * @return nombre descriptivo del menú
      */
