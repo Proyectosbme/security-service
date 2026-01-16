@@ -9,7 +9,6 @@ public interface MenuInputPort {
     Menu crear(Menu menu);
     Menu buscarPorId(Long id);
     void eliminar(Long id);
-    List<Menu> obtenerTodas();
     Menu acualizar(Long id,Menu menu);
     List<Menu> buscarPorFiltros(FiltroMenu filtroMenu);
 

@@ -34,19 +34,9 @@ public class MenuRepositoryAdapter implements MenuRepository {
     }
 
     @Override
-    public List<Menu> findAll() {
-        return this.menuJpaRepository.listAll()
-                // Convertir cada una a Persona (security.dominio)
-                .stream()
-                .map(menuOutputMapper::toDomain)
-                .toList();
-    }
-
-    @Override
     public boolean deleteById(Long id) {
         return menuJpaRepository.findByIdOptional(id)
                 .map(entity -> {
-                    // Si existe, eliminar
                     menuJpaRepository.delete(entity);
                     return true;
                 })

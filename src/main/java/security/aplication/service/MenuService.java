@@ -17,8 +17,8 @@ public class MenuService implements MenuInputPort {
     private final EliminarMenuUseCase eliminarMenuUseCase;
     private final BuscarMenuPorFiltros buscarMenuPorFiltros;
 
-        public MenuService(MenuRepository menuRepository, ModuloRepository moduloRepository) {
-        this.crearMenuUseCase = new CrearMenuUseCase(menuRepository,moduloRepository);
+    public MenuService(MenuRepository menuRepository, ModuloRepository moduloRepository) {
+        this.crearMenuUseCase = new CrearMenuUseCase(menuRepository, moduloRepository);
         this.buscarMenuPorIdUseCase = new BuscarMenuPorIdUseCase(menuRepository);
         this.actualizarMenuUseCase = new ActualizarMenuUseCase(menuRepository);
         this.eliminarMenuUseCase = new EliminarMenuUseCase(menuRepository);
@@ -38,16 +38,14 @@ public class MenuService implements MenuInputPort {
     }
 
     @Override
-    public void eliminar(Long id) {            eliminarMenuUseCase.ejecutar(id);; }
-
-    @Override
-    public List<Menu> obtenerTodas() {
-        return null;
+    public void eliminar(Long id) {
+        eliminarMenuUseCase.ejecutar(id);
     }
 
+
     @Override
-    public Menu acualizar(Long id,Menu menu) {
-            return actualizarMenuUseCase.ejecutar(id,menu);
+    public Menu acualizar(Long id, Menu menu) {
+        return actualizarMenuUseCase.ejecutar(id, menu);
     }
 
     @Override
