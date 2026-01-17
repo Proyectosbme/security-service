@@ -94,12 +94,12 @@ public class ModuloRepositoryAdapter implements ModuloRepository {
      * Obtiene todos los módulos de BD.
      * 
      * @return List<Modulo> con todos los módulos
-     * 
-     * Nota: Actualmente no implementado (retorna null)
      */
     @Override
     public List<Modulo> findAll() {
-        return null;
+        return moduloJpaRepository.listAll().stream()
+                .map(moduloOutputMapper::toDomain)
+                .toList();
     }
 
     /**
@@ -121,11 +121,15 @@ public class ModuloRepositoryAdapter implements ModuloRepository {
      * @param id ID del módulo a actualizar
      * @param modulo Modulo con nuevos datos
      * @return Modulo actualizado con cambios aplicados
-     * 
-     * Nota: Actualmente no implementado (retorna null)
      */
     @Override
     public Modulo update(Long id, Modulo modulo) {
+        ModuloJpaEntity entity = moduloJpaRepository.findById(id);
+        if (entity != null) {
+            moduloOutputMapper.applyToEntity(modulo, entity);
+            moduloJpaRepository.persist(entity);
+            return moduloOutputMapper.toDomain(entity);
+        }
         return null;
     }
 
@@ -133,11 +137,9 @@ public class ModuloRepositoryAdapter implements ModuloRepository {
      * Elimina un módulo por su ID (variante sin retorno).
      * 
      * @param id ID del módulo a eliminar
-     * 
-     * Nota: Actualmente no implementado
      */
     @Override
     public void delete(Long id) {
-
+        moduloJpaRepository.deleteById(id);
     }
 }

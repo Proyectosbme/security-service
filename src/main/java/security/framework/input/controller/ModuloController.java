@@ -1,8 +1,9 @@
 package security.framework.input.controller;
 
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import security.aplication.port.input.ModuloInputPort;
 import security.dominio.entidades.Modulo;
@@ -10,51 +11,22 @@ import security.framework.input.dto.ModuloRequestDTO;
 import security.framework.input.dto.ModuloResponseDTO;
 import security.framework.input.mapper.ModuloInputMapper;
 
+import java.util.List;
+
 /**
  * Controlador REST: ModuloController
  * 
  * Expone endpoints HTTP para operaciones CRUD de módulos.
- * Punto de entrada de la aplicación para gestión de módulos (REST API Adapter).
- * 
- * Responsabilidad:
- * - Recibir peticiones HTTP
- * - Validar DTOs de entrada
- * - Delegar lógica a puertos de entrada (ModuloInputPort)
- * - Retornar respuestas HTTP estructuradas
- * 
- * Patrón: REST Controller / Adapter de Entrada
- * Framework: JAX-RS (Jakarta REST)
- * 
- * Flujo Completo:
- * HTTP Request → @Path /modulo → ModuloController → ModuloInputPort (UseCase) → Respuesta HTTP
- * 
- * Anotaciones:
- * - @Path("/modulo"): Prefijo base para todos los endpoints
- * - @POST: Método HTTP soportado
- * - @Transactional: Demarca transacciones de BD
- * 
- * Endpoints:
- * - POST /modulo: Crear nuevo módulo (201 Created)
- * 
- * Nota: Actualmente solo implementa operación CREATE.
- * Otras operaciones (READ, UPDATE, DELETE, SEARCH) no están implementadas aún.
  */
 @Path("/modulo")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class ModuloController {
     
-    /** Mapper para conversiones ModuloRequestDTO ↔ ModuloResponseDTO ↔ Modulo */
     private final ModuloInputMapper moduloInputMapper;
-    
-    /** Puerto de entrada para casos de uso de módulos */
     private final ModuloInputPort moduloInputPort;
 
-    /**
-     * Constructor con inyección de dependencias.
-     * CDI automáticamente inyecta mapper y puerto.
-     * 
-     * @param moduloInputMapper Mapper de entrada (inyectado por CDI)
-     * @param moduloInputPort Puerto ModuloInputPort (inyectado por CDI)
-     */
+    @Inject
     public ModuloController(ModuloInputMapper moduloInputMapper, ModuloInputPort moduloInputPort) {
         this.moduloInputMapper = moduloInputMapper;
         this.moduloInputPort = moduloInputPort;
@@ -104,5 +76,54 @@ public class ModuloController {
                 .status(Response.Status.CREATED)
                 .entity(response)
                 .build();
+    }
+    
+    /**
+     * GET /modulo/{id}
+     * Busca un módulo por su ID
+     */
+    @GET
+    @Path("/{id}")
+    public Response buscarPorId(@PathParam("id") Long id) {
+        Modulo modulo = moduloInputPort.buscarPorId(id);
+        ModuloResponseDTO response = moduloInputMapper.toResponseDto(modulo);
+        return Response.ok(response).build();
+    }
+    
+    /**
+     * GET /modulo
+     * Obtiene todos los módulos
+     */
+    @GET
+    public Response obtenerTodos() {
+        List<Modulo> modulos = moduloInputPort.obtenerTodas();
+        List<ModuloResponseDTO> response = moduloInputMapper.toResponseDtoList(modulos);
+        return Response.ok(response).build();
+    }
+    
+    /**
+     * PUT /modulo/{id}
+     * Actualiza un módulo existente
+     */
+    @PUT
+    @Path("/{id}")
+    @Transactional
+    public Response actualizar(@PathParam("id") Long id, ModuloRequestDTO dto) {
+        Modulo modulo = moduloInputMapper.toDomain(dto);
+        Modulo moduloActualizado = moduloInputPort.acualizar(id, modulo);
+        ModuloResponseDTO response = moduloInputMapper.toResponseDto(moduloActualizado);
+        return Response.ok(response).build();
+    }
+    
+    /**
+     * DELETE /modulo/{id}
+     * Elimina un módulo
+     */
+    @DELETE
+    @Path("/{id}")
+    @Transactional
+    public Response eliminar(@PathParam("id") Long id) {
+        moduloInputPort.eliminar(id);
+        return Response.noContent().build();
     }
 }

@@ -1,6 +1,7 @@
 package security.framework.output.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import security.dominio.entidades.Modulo;
 import security.framework.output.persistence.ModuloJpaEntity;
@@ -67,5 +68,6 @@ public interface ModuloOutputMapper {
      * @param domain Modulo con nuevos datos
      * @param entity ModuloJpaEntity existente que se modificará
      */
+    @Mapping(target = "id", ignore = true)
     void applyToEntity(Modulo domain, @MappingTarget ModuloJpaEntity entity);
 }

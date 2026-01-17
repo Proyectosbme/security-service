@@ -122,22 +122,11 @@ public class ApplicationConfig {
      * - Depende de PerfilRepository (puerto de salida)
      * - Se inyecta en PerfilController y en clientes del servicio
      * 
-     * Casos de Uso:
-     * - CrearPerfilUseCase: Valida y crea nuevo perfil
-     * - BuscarPerfilPorIdUseCase: Busca perfil por ID
-     * - ActualizarPerfilUseCase: Actualiza perfil existente
-     * - EliminarPerfilUseCase: Elimina perfil por ID
-     * 
-     * @return PerfilService configurado con sus casos de uso
+     * @return PerfilService configurado con su repositorio
      */
     @Produces
     @ApplicationScoped
     public PerfilInputPort perfilService() {
-        return new PerfilService(
-            new CrearPerfilUseCase(perfilRepository),
-            new BuscarPerfilPorIdUseCase(perfilRepository),
-            new ActualizarPerfilUseCase(perfilRepository),
-            new EliminarPerfilUseCase(perfilRepository)
-        );
+        return new PerfilService(perfilRepository);
     }
 }

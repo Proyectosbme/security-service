@@ -4,12 +4,13 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import security.aplication.port.input.AsignarMenuAPerfilUseCase;
-import security.aplication.port.input.BuscarMenusPorPerfilUseCase;
-import security.aplication.port.input.RemoverMenuDePerfilUseCase;
+import security.aplication.dto.MenuJerarquico;
+import security.aplication.port.input.MenuPerfilInputPort;
 import security.dominio.entidades.MenuPerfil;
+import security.framework.input.dto.MenuJerarquicoResponseDTO;
 import security.framework.input.dto.MenuPerfilRequestDTO;
 import security.framework.input.dto.MenuPerfilResponseDTO;
+import security.framework.input.mapper.MenuJerarquicoMapper;
 import security.framework.input.mapper.MenuPerfilInputMapper;
 
 import java.math.BigInteger;
@@ -25,17 +26,18 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 public class MenuPerfilController {
     
-    @Inject
-    AsignarMenuAPerfilUseCase asignarMenuAPerfilUseCase;
+    private final MenuPerfilInputPort menuPerfilInputPort;
+    private final MenuPerfilInputMapper mapper;
+    private final MenuJerarquicoMapper menuJerarquicoMapper;
     
     @Inject
-    BuscarMenusPorPerfilUseCase buscarMenusPorPerfilUseCase;
-    
-    @Inject
-    RemoverMenuDePerfilUseCase removerMenuDePerfilUseCase;
-    
-    @Inject
-    MenuPerfilInputMapper mapper;
+    public MenuPerfilController(MenuPerfilInputPort menuPerfilInputPort,
+                                MenuPerfilInputMapper mapper,
+                                MenuJerarquicoMapper menuJerarquicoMapper) {
+        this.menuPerfilInputPort = menuPerfilInputPort;
+        this.mapper = mapper;
+        this.menuJerarquicoMapper = menuJerarquicoMapper;
+    }
     
     /**
      * POST /menu-perfil
@@ -43,11 +45,17 @@ public class MenuPerfilController {
      */
     @POST
     public Response asignar(MenuPerfilRequestDTO dto) {
-        MenuPerfil menuPerfil = asignarMenuAPerfilUseCase.asignar(
-            BigInteger.valueOf(dto.getMenuId()),
-            BigInteger.valueOf(dto.getPerfilId())
+        // Convertir DTO a entidad de dominio (respetando arquitectura hexagonal)
+        MenuPerfil menuPerfilDomain = mapper.toDomain(dto);
+        
+        // Llamar al puerto de entrada
+        MenuPerfil resultado = menuPerfilInputPort.asignar(
+            menuPerfilDomain.getMenuId(),
+            menuPerfilDomain.getPerfilId()
         );
-        MenuPerfilResponseDTO response = mapper.toResponseDto(menuPerfil);
+        
+        // Convertir resultado de dominio a DTO de respuesta
+        MenuPerfilResponseDTO response = mapper.toResponseDto(resultado);
         return Response.status(Response.Status.CREATED).entity(response).build();
     }
     
@@ -58,7 +66,7 @@ public class MenuPerfilController {
     @GET
     @Path("/perfil/{perfilId}")
     public Response buscarPorPerfil(@PathParam("perfilId") Long perfilId) {
-        List<MenuPerfil> menus = buscarMenusPorPerfilUseCase.buscar(BigInteger.valueOf(perfilId));
+        List<MenuPerfil> menus = menuPerfilInputPort.buscarPorPerfil(BigInteger.valueOf(perfilId));
         List<MenuPerfilResponseDTO> response = mapper.toResponseDtoList(menus);
         return Response.ok(response).build();
     }
@@ -73,10 +81,26 @@ public class MenuPerfilController {
         @PathParam("menuId") Long menuId,
         @PathParam("perfilId") Long perfilId
     ) {
-        removerMenuDePerfilUseCase.remover(
+        menuPerfilInputPort.remover(
             BigInteger.valueOf(menuId),
             BigInteger.valueOf(perfilId)
         );
         return Response.noContent().build();
+    }
+    
+    /**
+     * GET /menu-perfil/jerarquico/perfil/{perfilId}
+     * Obtiene estructura jerárquica de menús para un perfil
+     */
+    @GET
+    @Path("/jerarquico/perfil/{perfilId}")
+    public Response obtenerMenusJerarquicos(@PathParam("perfilId") Long perfilId) {
+        // Llamar al puerto de entrada (retorna DTO de aplicación)
+        List<MenuJerarquico> menusApp = menuPerfilInputPort.obtenerMenusJerarquicos(perfilId);
+        
+        // Convertir DTO de aplicación a DTO de framework
+        List<MenuJerarquicoResponseDTO> response = menuJerarquicoMapper.toResponseDtoList(menusApp);
+        
+        return Response.ok(response).build();
     }
 }

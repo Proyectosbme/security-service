@@ -108,7 +108,12 @@ public class MenuController {
     @POST
     @Transactional
     public Response crear(@Valid MenuRequestDTO dto) {
+
+        //USUARIO A DOMINIO
         Menu menu = menuInputMapper.toDomain(dto);
+
+
+
         Menu menuGuardado = menuInputPort.crear(menu);
         MenuResponseDTO response = menuInputMapper.toResponseDto(menuGuardado);
         return Response

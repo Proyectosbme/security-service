@@ -38,6 +38,11 @@ public interface ModuloInputMapper {
      * @return ModuloResponseDTO serializable a JSON para cliente HTTP
      */
     ModuloResponseDTO toResponseDto(Modulo modulo);
+    
+    /**
+     * Convierte lista de Modulo a lista de ModuloResponseDTO
+     */
+    java.util.List<ModuloResponseDTO> toResponseDtoList(java.util.List<Modulo> modulos);
 
     /**
      * Convierte ModuloRequestDTO (HTTP) a Modulo (Dominio).
