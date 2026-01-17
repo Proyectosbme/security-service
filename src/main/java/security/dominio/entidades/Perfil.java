@@ -56,4 +56,36 @@ public class Perfil {
     public Perfil(String nombre) {
         this.nombre = nombre;
     }
+
+    /**
+     * Obtiene el ID del perfil.
+     * @return ID del perfil
+     */
+    public BigInteger getId() {
+        return id;
+    }
+
+    /**
+     * Establece el ID del perfil.
+     * @param id ID a asignar
+     */
+    public void setId(BigInteger id) {
+        this.id = id;
+    }
+
+    /**
+     * Obtiene el nombre del perfil.
+     * @return nombre del perfil
+     */
+    public String getNombre() {
+        return nombre;
+    }
+
+    /**
+     * Establece el nombre del perfil.
+     * @param nombre nombre a asignar
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 }

@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigInteger;
-
 /**
  * Entidad JPA: PerfilJpaEntity
  * 
@@ -50,7 +48,7 @@ public class PerfilJpaEntity {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private Long id;
     
     /**
      * Nombre descriptivo del perfil

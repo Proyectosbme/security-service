@@ -1,5 +1,6 @@
 package security.dominio.entidades;
 
+import java.math.BigInteger;
 import java.util.Objects;
 
 /**
@@ -24,10 +25,10 @@ import java.util.Objects;
  * - Referencias un {@link Perfil}
  */
 public class MenuPerfil {
-    /** Menú asociado a este perfil */
-    Menu menu;
-    /** Perfil con acceso a este menú */
-    Perfil perfil;
+    /** ID del menú */
+    BigInteger menuId;
+    /** ID del perfil */
+    BigInteger perfilId;
 
     /**
      * Constructor sin parámetros.
@@ -39,67 +40,67 @@ public class MenuPerfil {
     /**
      * Constructor completo.
      * 
-     * @param menu   Menú a asociar
-     * @param perfil Perfil a asociar
+     * @param menuId   ID del menú
+     * @param perfilId ID del perfil
      */
-    public MenuPerfil(Menu menu, Perfil perfil) {
-        this.menu = menu;
-        this.perfil = perfil;
+    public MenuPerfil(BigInteger menuId, BigInteger perfilId) {
+        this.menuId = menuId;
+        this.perfilId = perfilId;
     }
 
 
     /**
-     * Obtiene el menú asociado.
-     * @return menú de esta asociación
+     * Obtiene el ID del menú.
+     * @return ID del menú
      */
-    public Menu getMenu() {
-        return menu;
+    public BigInteger getMenuId() {
+        return menuId;
     }
 
     /**
-     * Establece el menú asociado.
-     * @param menu menú a establecer
+     * Establece el ID del menú.
+     * @param menuId ID del menú
      */
-    public void setMenu(Menu menu) {
-        this.menu = menu;
+    public void setMenuId(BigInteger menuId) {
+        this.menuId = menuId;
     }
 
     /**
-     * Obtiene el perfil asociado.
-     * @return perfil de esta asociación
+     * Obtiene el ID del perfil.
+     * @return ID del perfil
      */
-    public Perfil getPerfil() {
-        return perfil;
+    public BigInteger getPerfilId() {
+        return perfilId;
     }
 
     /**
-     * Establece el perfil asociado.
-     * @param perfil perfil a establecer
+     * Establece el ID del perfil.
+     * @param perfilId ID del perfil
      */
-    public void setPerfil(Perfil perfil) {
-        this.perfil = perfil;
+    public void setPerfilId(BigInteger perfilId) {
+        this.perfilId = perfilId;
     }
 
     /**
-     * Compara dos MenuPerfil basándose en el menú y perfil.
+     * Compara dos MenuPerfil basándose en menuId y perfilId.
      * @param o objeto a comparar
-     * @return true si tienen el mismo menú y perfil
+     * @return true si tienen el mismo menuId y perfilId
      */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MenuPerfil that = (MenuPerfil) o;
-        return Objects.equals(menu, that.menu) && Objects.equals(perfil, that.perfil);
+        return Objects.equals(menuId, that.menuId) && Objects.equals(perfilId, that.perfilId);
     }
 
     /**
-     * Calcula el hash basándose en el menú y perfil.
+     * Calcula el hash basándose en menuId y perfilId.
      * @return código hash
      */
     @Override
     public int hashCode() {
-        return Objects.hash(menu, perfil);
+        return Objects.hash(menuId, perfilId);
     }
 
     /**
@@ -109,8 +110,8 @@ public class MenuPerfil {
     @Override
     public String toString() {
         return "MenuPerfil{" +
-                "menu=" + menu +
-                ", perfil=" + perfil +
+                "menuId=" + menuId +
+                ", perfilId=" + perfilId +
                 '}';
     }
 }

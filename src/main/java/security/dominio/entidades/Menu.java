@@ -179,12 +179,7 @@ public class Menu {
         if (estado == null) {
             throw new SecurityValidationException("El estado del menú no puede ser nulo");
         }
-        
-        // 6. Pantalla y menuPadre pueden ser nulos (opcionales)
-        // pero si hay pantalla, conviene validar que module existe
-        if (pantalla != null && pantalla.getModulo() == null) {
-            throw new SecurityValidationException("La pantalla asociada debe tener un módulo válido");
-        }
+
         
         // 7. Si es submenú (menuPadre no nulo), validar que existe
         if (menuPadre != null && menuPadre.getMenuId() == null) {
@@ -213,6 +208,15 @@ public class Menu {
      * @return ID del menú
      */
     public BigInteger getMenuId() {
+        return menuId;
+    }
+
+    /**
+     * Obtiene el identificador único del menú (alias de getMenuId).
+     * Alias para compatibilidad con código que usa getId().
+     * @return ID del menú
+     */
+    public BigInteger getId() {
         return menuId;
     }
 

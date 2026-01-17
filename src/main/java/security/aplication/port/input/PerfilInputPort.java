@@ -1,6 +1,7 @@
 package security.aplication.port.input;
 
 import security.dominio.entidades.Perfil;
+import java.math.BigInteger;
 
 /**
  * Puerto de Entrada: PerfilInputPort

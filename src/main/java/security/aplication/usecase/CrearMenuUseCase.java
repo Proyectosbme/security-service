@@ -79,7 +79,7 @@ public class CrearMenuUseCase {
         
         // 4. Verificar que MenuPadre existe (si viene seteado)
         if (menu.getMenuPadre() != null && menu.getMenuPadre().getId() != null) {
-            menuRepository.findById(menu.getMenuPadre().getId())
+            menuRepository.findById(menu.getMenuPadre().getId().longValue())
                     .orElseThrow(() -> new SecurityNotFoundException(
                             "Menú Padre no encontrado con ID: " + menu.getMenuPadre().getId()));
         }
