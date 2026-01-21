@@ -1,6 +1,9 @@
 package security.aplication.port.input;
 
+import security.dominio.entidades.Modulo;
 import security.dominio.entidades.Pantalla;
+
+import java.util.List;
 
 /**
  * Puerto de Entrada: PantallaInputPort
@@ -50,6 +53,7 @@ public interface PantallaInputPort {
      */
     Pantalla buscarPorId(Long id);
 
+    List<Pantalla> obtenerTodas();
     /**
      * Actualiza una pantalla existente.
      * 
@@ -72,4 +76,6 @@ public interface PantallaInputPort {
      * @throws SecurityNotFoundException si no existe
      */
     void eliminar(Long id);
+
+
 }

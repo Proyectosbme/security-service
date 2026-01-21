@@ -11,6 +11,8 @@ import security.dominio.entidades.Pantalla;
 import security.dominio.exceptions.SecurityNotFoundException;
 import security.dominio.exceptions.SecurityValidationException;
 
+import java.util.List;
+
 /**
  * Servicio: PantallaService
  * 
@@ -45,7 +47,6 @@ import security.dominio.exceptions.SecurityValidationException;
  */
 public class PantallaService implements PantallaInputPort {
 
-    private final PantallaRepository pantallaRepository;
     
     // Casos de uso inyectables
     private final CrearPantallaUseCase crearUseCase;
@@ -62,8 +63,6 @@ public class PantallaService implements PantallaInputPort {
      */
     @Inject
     public PantallaService(PantallaRepository pantallaRepository) {
-        this.pantallaRepository = pantallaRepository;
-        
         // Inicializar casos de uso con repositorio
         this.crearUseCase = new CrearPantallaUseCase(pantallaRepository);
         this.buscarUseCase = new BuscarPantallaPorIdUseCase(pantallaRepository);
@@ -104,6 +103,11 @@ public class PantallaService implements PantallaInputPort {
     @Override
     public Pantalla buscarPorId(Long id) {
         return buscarUseCase.ejecutar(id);
+    }
+
+    @Override
+    public List<Pantalla> obtenerTodas() {
+        return List.of();
     }
 
     /**
