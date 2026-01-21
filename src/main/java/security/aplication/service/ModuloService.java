@@ -2,7 +2,7 @@ package security.aplication.service;
 
 import security.aplication.port.input.ModuloInputPort;
 import security.aplication.port.output.ModuloRepository;
-import security.aplication.usecase.CrearModuloUseCase;
+import security.aplication.usecase.*;
 import security.dominio.entidades.Modulo;
 import security.dominio.exceptions.SecurityNotFoundException;
 
@@ -32,7 +32,11 @@ import java.util.List;
 public class ModuloService implements ModuloInputPort {
 
     private final CrearModuloUseCase crearModuloUseCase;
-    private final ModuloRepository moduloRepository;
+    private final BuscarModuloPorIdUseCase buscarModuloPorIdUseCase;
+    private final EliminarModuloUseCase eliminarModuloUseCase;
+    private final ObtenerModulosUseCase obtenerModulosUseCase;
+    private final ActualizarModuloUseCase actualizarModuloUseCase;
+
 
     /**
      * Constructor con inyección de dependencias.
@@ -44,7 +48,10 @@ public class ModuloService implements ModuloInputPort {
      */
     public ModuloService(ModuloRepository moduloRepository) {
         this.crearModuloUseCase = new CrearModuloUseCase(moduloRepository);
-        this.moduloRepository = moduloRepository;
+        this.buscarModuloPorIdUseCase = new BuscarModuloPorIdUseCase(moduloRepository);
+        this.eliminarModuloUseCase = new EliminarModuloUseCase(moduloRepository);
+        this.obtenerModulosUseCase = new ObtenerModulosUseCase(moduloRepository);
+        this.actualizarModuloUseCase = new ActualizarModuloUseCase(moduloRepository);
     }
 
     /**
@@ -58,6 +65,7 @@ public class ModuloService implements ModuloInputPort {
      */
     @Override
     public Modulo crear(Modulo modulo) {
+
         return crearModuloUseCase.ejecutar(modulo);
     }
 
@@ -70,8 +78,7 @@ public class ModuloService implements ModuloInputPort {
      */
     @Override
     public Modulo buscarPorId(Long id) {
-        return moduloRepository.findById(id)
-                .orElseThrow(() -> new SecurityNotFoundException("Módulo no encontrado con id: " + id));
+        return buscarModuloPorIdUseCase.ejecutar(id);
     }
 
     /**
@@ -84,20 +91,18 @@ public class ModuloService implements ModuloInputPort {
      */
     @Override
     public void eliminar(Long id) {
-        if (!moduloRepository.findById(id).isPresent()) {
-            throw new SecurityNotFoundException("Módulo no encontrado con id: " + id);
-        }
-        moduloRepository.delete(id);
+       eliminarModuloUseCase.ejecutar(id);
     }
 
     /**
      * Obtiene todos los módulos del sistema.
-     * 
+     *
      * @return Lista completa de módulos (puede estar vacía)
      */
     @Override
     public List<Modulo> obtenerTodas() {
-        return moduloRepository.findAll();
+
+        return obtenerModulosUseCase.ejecutar();
     }
 
     /**
@@ -111,10 +116,7 @@ public class ModuloService implements ModuloInputPort {
      * @throws SecurityNotFoundException Si el módulo no existe
      */
     @Override
-    public Modulo acualizar(Long id, Modulo Modulo) {
-        if (!moduloRepository.findById(id).isPresent()) {
-            throw new SecurityNotFoundException("Módulo no encontrado con id: " + id);
-        }
-        return moduloRepository.update(id, Modulo);
+    public Modulo acualizar(Long id, Modulo modulo) {
+      return actualizarModuloUseCase.ejecutar(id,modulo);
     }
 }
