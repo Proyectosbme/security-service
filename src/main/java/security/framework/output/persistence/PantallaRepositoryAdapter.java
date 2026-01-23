@@ -6,6 +6,7 @@ import security.aplication.port.output.PantallaRepository;
 import security.dominio.entidades.Pantalla;
 import security.framework.output.mapper.PantallaOutputMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -81,6 +82,12 @@ public class PantallaRepositoryAdapter implements PantallaRepository {
         
         // 3. Convertir JPA a dominio (incluye ID asignado)
         return pantallaOutputMapper.toDomain(jpaEntity);
+    }
+
+    @Override
+    public List<Pantalla> findAll() {
+        return pantallaJpaRepository.listAll().stream()
+                .map(pantallaOutputMapper::toDomain).toList();
     }
 
     /**

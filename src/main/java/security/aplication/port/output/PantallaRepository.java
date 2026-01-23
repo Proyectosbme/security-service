@@ -1,7 +1,9 @@
 package security.aplication.port.output;
 
+import security.dominio.entidades.Modulo;
 import security.dominio.entidades.Pantalla;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -32,6 +34,8 @@ public interface PantallaRepository {
      */
     Pantalla save(Pantalla pantalla);
 
+
+    List<Pantalla> findAll();
     /**
      * Obtiene una pantalla por su ID.
      * 

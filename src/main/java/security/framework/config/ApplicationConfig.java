@@ -110,7 +110,7 @@ public class ApplicationConfig {
     @Produces
     @ApplicationScoped
     public PantallaInputPort pantallaService() {
-        return new PantallaService(pantallaRepository);
+        return new PantallaService(pantallaRepository, moduloRepository);
     }
 
     /**

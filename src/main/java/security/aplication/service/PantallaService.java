@@ -2,11 +2,9 @@ package security.aplication.service;
 
 import jakarta.inject.Inject;
 import security.aplication.port.input.PantallaInputPort;
+import security.aplication.port.output.ModuloRepository;
 import security.aplication.port.output.PantallaRepository;
-import security.aplication.usecase.ActualizarPantallaUseCase;
-import security.aplication.usecase.BuscarPantallaPorIdUseCase;
-import security.aplication.usecase.CrearPantallaUseCase;
-import security.aplication.usecase.EliminarPantallaUseCase;
+import security.aplication.usecase.*;
 import security.dominio.entidades.Pantalla;
 import security.dominio.exceptions.SecurityNotFoundException;
 import security.dominio.exceptions.SecurityValidationException;
@@ -53,6 +51,7 @@ public class PantallaService implements PantallaInputPort {
     private final BuscarPantallaPorIdUseCase buscarUseCase;
     private final ActualizarPantallaUseCase actualizarUseCase;
     private final EliminarPantallaUseCase eliminarUseCase;
+    private final ObtenerPantallasUseCase obtenerPantallasUseCase;
 
     /**
      * Constructor con inyección de repositorio.
@@ -62,12 +61,13 @@ public class PantallaService implements PantallaInputPort {
      * @param pantallaRepository Repositorio de pantallas (inyectado por CDI)
      */
     @Inject
-    public PantallaService(PantallaRepository pantallaRepository) {
+    public PantallaService(PantallaRepository pantallaRepository, ModuloRepository moduloRepository) {
         // Inicializar casos de uso con repositorio
         this.crearUseCase = new CrearPantallaUseCase(pantallaRepository);
         this.buscarUseCase = new BuscarPantallaPorIdUseCase(pantallaRepository);
         this.actualizarUseCase = new ActualizarPantallaUseCase(pantallaRepository);
         this.eliminarUseCase = new EliminarPantallaUseCase(pantallaRepository);
+        this.obtenerPantallasUseCase = new ObtenerPantallasUseCase(pantallaRepository,moduloRepository);
     }
 
     /**
@@ -107,7 +107,8 @@ public class PantallaService implements PantallaInputPort {
 
     @Override
     public List<Pantalla> obtenerTodas() {
-        return List.of();
+
+        return obtenerPantallasUseCase.ejecutar();
     }
 
     /**

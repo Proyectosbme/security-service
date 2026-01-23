@@ -12,6 +12,8 @@ import security.aplication.port.input.PantallaInputPort;
 import security.dominio.entidades.Pantalla;
 import security.framework.input.mapper.PantallaInputMapper;
 
+import java.util.List;
+
 /**
  * Controlador: PantallaController
  * 
@@ -139,6 +141,12 @@ public class PantallaController {
         return Response.ok(response).build();
     }
 
+
+    @GET
+    public Response obtenerTodas() {
+        List<Pantalla> lstPantallas = pantallaInputPort.obtenerTodas();
+        return Response.ok(lstPantallas).build();
+    }
     /**
      * Actualiza pantalla existente.
      * 
