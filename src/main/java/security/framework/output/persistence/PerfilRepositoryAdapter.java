@@ -7,6 +7,7 @@ import security.dominio.entidades.Perfil;
 import security.framework.output.mapper.PerfilOutputMapper;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -120,6 +121,12 @@ public class PerfilRepositoryAdapter implements PerfilRepository {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<Perfil> findAll() {
+        return perfilJpaRepository.findAll()
+                .stream().map(perfilOutputMapper::toDomain).toList();
     }
 
     /**

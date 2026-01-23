@@ -9,6 +9,7 @@ import security.framework.output.mapper.MenuPerfilJpaMapper;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Adaptador de Salida: MenuPerfilRepositoryAdapter
@@ -31,7 +32,19 @@ public class MenuPerfilRepositoryAdapter implements MenuPerfilRepository {
         jpaRepository.persist(entity);
         return mapper.toDomain(entity);
     }
-    
+
+    @Override
+    public Optional<MenuPerfil> buscarMenuPerfil(MenuPerfil menuPerfil) {
+        MenuPerfilId id = new MenuPerfilId(
+                menuPerfil.getMenuId().longValue(),
+                menuPerfil.getPerfilId().longValue()
+        );
+
+        return jpaRepository.findByIdOptional(id)
+                .map(mapper::toDomain);
+
+    }
+
     @Override
     public List<MenuPerfil> findByPerfilId(BigInteger perfilId) {
         List<MenuPerfilJpaEntity> entities = jpaRepository.findByPerfilId(perfilId.longValue());

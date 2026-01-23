@@ -47,6 +47,7 @@ public class Perfil {
         this.nombre = nombre;
     }
 
+
     /**
      * Constructor sin identificador (para nuevos perfiles).
      * El ID se asignará al persistir en BD.

@@ -3,6 +3,7 @@ package security.aplication.port.output;
 import security.dominio.entidades.Perfil;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -58,4 +59,7 @@ public interface PerfilRepository {
      * @return true si se eliminó, false si no existía
      */
     boolean deleteById(BigInteger id);
+
+
+    List<Perfil> findAll();
 }

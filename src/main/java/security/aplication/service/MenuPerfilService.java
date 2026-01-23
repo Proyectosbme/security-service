@@ -7,6 +7,8 @@ import security.aplication.port.input.MenuPerfilInputPort;
 import security.aplication.port.output.MenuPerfilRepository;
 import security.aplication.port.output.MenuPerfilViewRepository;
 import security.aplication.usecase.AsignarMenuAPerfilUseCase;
+import security.aplication.usecase.BuscarMenuPefilPorPefil;
+import security.aplication.usecase.EliminarMenuPerfilUseCase;
 import security.aplication.usecase.ObtenerMenusJerarquicosPorPerfilUseCase;
 import security.dominio.entidades.MenuPerfil;
 
@@ -27,17 +29,19 @@ import java.util.*;
  */
 @ApplicationScoped
 public class MenuPerfilService implements MenuPerfilInputPort {
-    
-    private final MenuPerfilRepository menuPerfilRepository;
+
     private final AsignarMenuAPerfilUseCase asignarMenuAPerfilUseCase;
     private final ObtenerMenusJerarquicosPorPerfilUseCase obtenerMenusJerarquicosUseCase;
+    private final BuscarMenuPefilPorPefil buscarMenuPefilPorPefil;
+    private final EliminarMenuPerfilUseCase eliminarMenuPerfilUseCase;
     
     @Inject
     public MenuPerfilService(MenuPerfilRepository menuPerfilRepository, 
                              MenuPerfilViewRepository menuPerfilViewRepository) {
-        this.menuPerfilRepository = menuPerfilRepository;
         this.asignarMenuAPerfilUseCase = new AsignarMenuAPerfilUseCase(menuPerfilRepository);
         this.obtenerMenusJerarquicosUseCase = new ObtenerMenusJerarquicosPorPerfilUseCase(menuPerfilViewRepository);
+        this.buscarMenuPefilPorPefil = new BuscarMenuPefilPorPefil(menuPerfilRepository);
+        this.eliminarMenuPerfilUseCase = new EliminarMenuPerfilUseCase(menuPerfilRepository);
     }
     
     @Override
@@ -47,12 +51,12 @@ public class MenuPerfilService implements MenuPerfilInputPort {
     
     @Override
     public List<MenuPerfil> buscarPorPerfil(BigInteger perfilId) {
-        return menuPerfilRepository.findByPerfilId(perfilId);
+        return buscarMenuPefilPorPefil.ejecutar(perfilId);
     }
     
     @Override
     public void remover(BigInteger menuId, BigInteger perfilId) {
-        menuPerfilRepository.delete(menuId, perfilId);
+       this.eliminarMenuPerfilUseCase.ejecutar(menuId,perfilId);
     }
     
     @Override

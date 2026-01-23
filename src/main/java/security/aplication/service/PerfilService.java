@@ -2,11 +2,12 @@ package security.aplication.service;
 
 import security.aplication.port.input.PerfilInputPort;
 import security.aplication.port.output.PerfilRepository;
-import security.aplication.usecase.CrearPerfilUseCase;
+import security.aplication.usecase.*;
 import security.dominio.entidades.Perfil;
 import security.dominio.exceptions.SecurityNotFoundException;
 
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  * Servicio de Aplicación: PerfilService
@@ -32,7 +33,10 @@ import java.math.BigInteger;
 public class PerfilService implements PerfilInputPort {
     
     private final CrearPerfilUseCase crearPerfilUseCase;
-    private final PerfilRepository perfilRepository;
+    private final ObtenerPerfilesUseCase obtenerPerfilesUseCase;
+    private final EliminarPerfilUseCase eliminarPerfilUseCase;
+    private final ActualizarPerfilUseCase actualizarPerfilUseCase;
+    private final BuscarPerfilPorIdUseCase buscarPerfilPorIdUseCase;
 
     /**
      * Constructor con inyección de dependencias.
@@ -44,7 +48,12 @@ public class PerfilService implements PerfilInputPort {
      */
     public PerfilService(PerfilRepository perfilRepository) {
         this.crearPerfilUseCase = new CrearPerfilUseCase(perfilRepository);
-        this.perfilRepository = perfilRepository;
+        this.obtenerPerfilesUseCase = new ObtenerPerfilesUseCase(perfilRepository);
+        this.eliminarPerfilUseCase = new EliminarPerfilUseCase(perfilRepository);
+        this.actualizarPerfilUseCase = new ActualizarPerfilUseCase(perfilRepository);
+        this.buscarPerfilPorIdUseCase = new BuscarPerfilPorIdUseCase(perfilRepository);
+
+
     }
 
     /**
@@ -70,8 +79,7 @@ public class PerfilService implements PerfilInputPort {
      */
     @Override
     public Perfil buscarPorId(BigInteger id) {
-        return perfilRepository.findById(id)
-                .orElseThrow(() -> new SecurityNotFoundException("Perfil no encontrado con id: " + id));
+        return buscarPerfilPorIdUseCase.ejecutar(id);
     }
 
     /**
@@ -86,10 +94,7 @@ public class PerfilService implements PerfilInputPort {
      */
     @Override
     public Perfil actualizar(BigInteger id, Perfil perfil) {
-        if (!perfilRepository.findById(id).isPresent()) {
-            throw new SecurityNotFoundException("Perfil no encontrado con id: " + id);
-        }
-        return perfilRepository.update(id, perfil);
+      return actualizarPerfilUseCase.ejecutar(id, perfil);
     }
 
     /**
@@ -102,9 +107,11 @@ public class PerfilService implements PerfilInputPort {
      */
     @Override
     public void eliminar(BigInteger id) {
-        if (!perfilRepository.findById(id).isPresent()) {
-            throw new SecurityNotFoundException("Perfil no encontrado con id: " + id);
-        }
-        perfilRepository.deleteById(id);
+       this.eliminarPerfilUseCase.ejecutar(id);
+    }
+
+    @Override
+    public List<Perfil> obtenerTodos() {
+        return obtenerPerfilesUseCase.ejecutar();
     }
 }

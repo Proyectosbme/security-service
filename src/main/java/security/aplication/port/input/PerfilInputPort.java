@@ -2,6 +2,7 @@ package security.aplication.port.input;
 
 import security.dominio.entidades.Perfil;
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  * Puerto de Entrada: PerfilInputPort
@@ -55,4 +56,7 @@ public interface PerfilInputPort {
      * @param id ID del perfil a eliminar
      */
     void eliminar(BigInteger id);
+
+
+    List<Perfil> obtenerTodos();
 }

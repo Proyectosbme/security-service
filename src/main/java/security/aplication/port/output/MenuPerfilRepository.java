@@ -4,6 +4,7 @@ import security.dominio.entidades.MenuPerfil;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Puerto de Salida: MenuPerfilRepository
@@ -16,7 +17,9 @@ public interface MenuPerfilRepository {
      * Guarda una relación menú-perfil
      */
     MenuPerfil save(MenuPerfil menuPerfil);
-    
+
+
+    Optional<MenuPerfil> buscarMenuPerfil(MenuPerfil menuPerfil);
     /**
      * Busca todas las relaciones menú-perfil de un perfil
      */
