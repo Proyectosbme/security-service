@@ -16,16 +16,25 @@ import java.math.BigInteger;
 import java.util.*;
 
 /**
- * Servicio: MenuPerfilService
+ * Servicio de Aplicación: MenuPerfilService
  * 
- * Implementa MenuPerfilInputPort y delega a casos de uso.
- * Mantiene la arquitectura limpia delegando toda lógica a UseCases.
+ * Orquesta operaciones de menú-perfil como implementación de MenuPerfilInputPort.
  * 
- * Arquitectura Hexagonal:
- * - Solo usa DTOs de aplicación (MenuPerfilView)
- * - No importa nada del framework/infraestructura
- * - Delega toda lógica a casos de uso específicos
- * - Servicio actúa solo como orquestador
+ * Responsabilidad:
+ * 1. Instanciar casos de uso de menú-perfil
+ * 2. Delegar asignación, consulta y eliminación de relaciones
+ * 3. Construir menús jerárquicos por perfil
+ * 
+ * Patrón: Application Service / Facade
+ * 
+ * Flujo:
+ * Controller -> MenuPerfilInputPort -> MenuPerfilService -> UseCases -> Repositorios
+ * 
+ * Excepciones:
+ * - Se propagan las excepciones de los casos de uso
+ * 
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 @ApplicationScoped
 public class MenuPerfilService implements MenuPerfilInputPort {
@@ -43,22 +52,47 @@ public class MenuPerfilService implements MenuPerfilInputPort {
         this.buscarMenuPefilPorPefil = new BuscarMenuPefilPorPefil(menuPerfilRepository);
         this.eliminarMenuPerfilUseCase = new EliminarMenuPerfilUseCase(menuPerfilRepository);
     }
-    
+
+    /**
+     * Asigna un menú a un perfil.
+     *
+     * @param menuId identificador del menú
+     * @param perfilId identificador del perfil
+     * @return relación menú-perfil creada
+     */
     @Override
     public MenuPerfil asignar(BigInteger menuId, BigInteger perfilId) {
         return asignarMenuAPerfilUseCase.ejecutar(menuId, perfilId);
     }
-    
+
+    /**
+     * Obtiene las relaciones menú-perfil por perfil.
+     *
+     * @param perfilId identificador del perfil
+     * @return lista de relaciones menú-perfil
+     */
     @Override
     public List<MenuPerfil> buscarPorPerfil(BigInteger perfilId) {
         return buscarMenuPefilPorPefil.ejecutar(perfilId);
     }
-    
+
+    /**
+     * Elimina una relación menú-perfil.
+     *
+     * @param menuId identificador del menú
+     * @param perfilId identificador del perfil
+     */
     @Override
     public void remover(BigInteger menuId, BigInteger perfilId) {
        this.eliminarMenuPerfilUseCase.ejecutar(menuId,perfilId);
     }
-    
+
+    /**
+     * Obtiene el menú jerárquico asociado a un perfil.
+     *
+     * @param perfilId identificador del perfil
+     * @return lista de menús jerárquicos
+     */
     @Override
     public List<MenuJerarquico> obtenerMenusJerarquicos(Long perfilId) {
         return obtenerMenusJerarquicosUseCase.ejecutar(perfilId);

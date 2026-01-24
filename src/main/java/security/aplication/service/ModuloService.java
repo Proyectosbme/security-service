@@ -11,23 +11,23 @@ import java.util.List;
 /**
  * Servicio de Aplicación: ModuloService
  * 
- * Implementa ModuloInputPort para orquestar operaciones CRUD sobre módulos.
+ * Orquesta operaciones de módulo como implementación de {@link ModuloInputPort}.
  * 
- * Patrón: Application Service (Hexagonal Architecture)
- * Responsabilidad: Coordinar casos de uso y delegar a repositorio
+ * Responsabilidad:
+ * 1. Instanciar casos de uso de módulo
+ * 2. Delegar operaciones de creación, consulta, actualización y eliminación
+ * 3. Exponer un API de aplicación estable
+ * 
+ * Patrón: Application Service / Facade
  * 
  * Flujo:
- * Controller → ModuloInputPort → ModuloService → ModuloRepository → BD
+ * Controller → ModuloInputPort → ModuloService → UseCases → Repositorio
  * 
- * Características:
- * - Validación de existencia antes de operaciones (buscar, eliminar, actualizar)
- * - Lanza SecurityNotFoundException cuando módulo no existe
- * - Delega creación a CrearModuloUseCase (patrón UseCase)
- * - Operaciones directas al repositorio para CRUD básico
+ * Excepciones:
+ * - SecurityNotFoundException: cuando el módulo no existe
  * 
- * @see ModuloInputPort Puerto de entrada implementado
- * @see ModuloRepository Puerto de salida para persistencia
- * @see CrearModuloUseCase Caso de uso de creación
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public class ModuloService implements ModuloInputPort {
 

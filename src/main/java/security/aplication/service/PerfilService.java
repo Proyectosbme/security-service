@@ -12,23 +12,23 @@ import java.util.List;
 /**
  * Servicio de Aplicación: PerfilService
  * 
- * Implementa PerfilInputPort para orquestar operaciones CRUD sobre perfiles.
+ * Orquesta operaciones de perfil como implementación de {@link PerfilInputPort}.
  * 
- * Patrón: Application Service (Hexagonal Architecture)
- * Responsabilidad: Coordinar casos de uso y delegar a repositorio
+ * Responsabilidad:
+ * 1. Instanciar casos de uso de perfil
+ * 2. Delegar operaciones de creación, consulta, actualización y eliminación
+ * 3. Exponer un API de aplicación estable
+ * 
+ * Patrón: Application Service / Facade
  * 
  * Flujo:
- * Controller → PerfilInputPort → PerfilService → PerfilRepository → BD
+ * Controller → PerfilInputPort → PerfilService → UseCases → Repositorio
  * 
- * Características:
- * - Validación de existencia antes de operaciones (buscar, eliminar, actualizar)
- * - Lanza SecurityNotFoundException cuando perfil no existe
- * - Delega creación a CrearPerfilUseCase (patrón UseCase)
- * - Operaciones directas al repositorio para CRUD básico
+ * Excepciones:
+ * - SecurityNotFoundException: cuando el perfil no existe
  * 
- * @see PerfilInputPort Puerto de entrada implementado
- * @see PerfilRepository Puerto de salida para persistencia
- * @see CrearPerfilUseCase Caso de uso de creación
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public class PerfilService implements PerfilInputPort {
     

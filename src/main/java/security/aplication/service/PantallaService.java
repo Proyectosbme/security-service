@@ -12,35 +12,25 @@ import security.dominio.exceptions.SecurityValidationException;
 import java.util.List;
 
 /**
- * Servicio: PantallaService
+ * Servicio de Aplicación: PantallaService
  * 
- * Responsabilidad: Orquestar los casos de uso de pantalla como implementación del puerto de entrada.
+ * Orquesta operaciones de pantalla como implementación de {@link PantallaInputPort}.
  * 
- * Patrón Hexagonal:
- * - Implementa PantallaInputPort (puerto de entrada)
- * - Orquesta CrearPantallaUseCase, BuscarPantallaPorIdUseCase, ActualizarPantallaUseCase, EliminarPantallaUseCase
- * - Depende de PantallaRepository (puerto de salida) inyectado
- * - Se expone a través de ApplicationConfig como bean CDI
+ * Responsabilidad:
+ * 1. Instanciar casos de uso de pantalla
+ * 2. Delegar operaciones de creación, consulta, actualización y eliminación
+ * 3. Exponer un API de aplicación estable
  * 
- * Flujo de Inyección:
- * 1. ApplicationConfig.pantallasInputPort() produce instancia de PantallaService
- * 2. PantallaService inyecta PantallaRepository (inyectado por ApplicationConfig)
- * 3. PantallaController inyecta PantallaInputPort (que es PantallaService)
- * 4. Llamadas HTTP → Controller → Service → UseCases → Repository
+ * Patrón: Application Service / Facade
  * 
- * Auditoría:
- * - Crear: Registra userC y fechaC (creador y fecha de creación)
- * - Actualizar: Preserva userC/fechaC, registra userMod y fechaMod (modificador y fecha)
- * - Eliminar: Elimina registro (sin auditoría de eliminación en esta versión)
+ * Flujo:
+ * Controller → PantallaInputPort → PantallaService → UseCases → Repositorios
  * 
  * Excepciones:
- * - SecurityValidationException: Datos inválidos o violación de reglas de negocio
- * - SecurityNotFoundException: Pantalla no encontrada
+ * - SecurityValidationException: datos inválidos
+ * - SecurityNotFoundException: pantalla no encontrada
  * 
- * Scopes:
- * - Se produce como bean mediante @Produces en ApplicationConfig (evita ambigüedad)
- * 
- * @author Security Team
+ * @author bme(Bryan Ivan Marroquin)
  * @version 1.0
  */
 public class PantallaService implements PantallaInputPort {

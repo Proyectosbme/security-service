@@ -12,19 +12,22 @@ import java.util.List;
 /**
  * Servicio de Aplicación: MenuService
  * 
- * Implementa MenuInputPort y orquesta casos de uso de menús.
+ * Orquesta operaciones de menú como implementación de {@link MenuInputPort}.
  * 
- * Responsabilidad: Coordinar casos de uso sin contener lógica de negocio.
+ * Responsabilidad:
+ * 1. Instanciar casos de uso de menú
+ * 2. Delegar operaciones de creación, consulta, actualización y eliminación
+ * 3. Exponer un API de aplicación estable
  * 
- * Patrón: Service Locator / Facade
- * Instancia y delega a casos de uso especializados.
+ * Patrón: Application Service / Facade
  * 
- * Dependencias:
- * - MenuRepository: CRUD de menús
- * - ModuloRepository: Verificación de módulos
- * - PantallaRepository: Verificación de pantallas
+ * Flujo:
+ * Controller → MenuInputPort → MenuService → UseCases → Repositorios
  * 
- * @author Security Team
+ * Excepciones:
+ * - Se propagan las excepciones de los casos de uso
+ * 
+ * @author bme(Bryan Ivan Marroquin)
  * @version 1.0
  */
 public class MenuService implements MenuInputPort {
