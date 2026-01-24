@@ -1,5 +1,7 @@
 package security.dominio.entidades;
 
+import security.dominio.exceptions.SecurityValidationException;
+
 import java.math.BigInteger;
 
 /**
@@ -88,5 +90,19 @@ public class Perfil {
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    /**
+     * Valida que el perfil cumpla con las reglas de negocio.
+     *
+     * Reglas de validación:
+     * - El nombre no puede ser nulo o vacío
+     *
+     * @throws SecurityValidationException si la validación falla
+     */
+    public void validar() {
+        if (nombre == null || nombre.trim().isBlank()) {
+            throw new SecurityValidationException("nombre", "El nombre del perfil no puede ir vacío");
+        }
     }
 }

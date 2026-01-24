@@ -4,12 +4,15 @@ package security.aplication.dto;
  * DTO de Aplicación: MenuPerfilView
  * 
  * Representa los datos de la vista vw_menu_perfil sin depender de JPA.
- * Usado por MenuPerfilService para construir menús jerárquicos.
  * 
- * Arquitectura Hexagonal:
- * - DTO en capa de aplicación (no framework)
- * - Sin anotaciones JPA
- * - Mapeado desde MenuPerfilViewEntity en el adapter
+ * Responsabilidad:
+ * 1. Transportar datos de menús por perfil
+ * 2. Mantener independencia del framework
+ * 
+ * Patrón: DTO
+ * 
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public class MenuPerfilView {
     

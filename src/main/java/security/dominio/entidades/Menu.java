@@ -20,9 +20,9 @@ import java.util.Objects;
  * - Tiene un estado (ACTIVO o INACTIVO)
  * 
  * Relaciones:
- * - Pertenece a un {@link Modulo}
- * - Puede referenciar otro {@link Menu} como padre
- * - Está asociado a una {@link Pantalla}
+ * - Referencia a un módulo por su ID
+ * - Puede referenciar un menú padre por su ID
+ * - Puede asociarse a una pantalla por su ID
  * - Puede asignarse a múltiples {@link Perfil} a través de {@link MenuPerfil}
  * 
  * Validaciones:
@@ -41,12 +41,12 @@ public class Menu {
     private BigInteger jerarquia;
     /** Posición del menú dentro de su nivel jerárquico */
     private BigInteger orden;
-    /** Pantalla/interfaz de usuario asociada al menú */
-    private Pantalla pantalla;
-    /** Módulo al que pertenece este menú */
-    private Modulo modulo;
-    /** Menú padre (nulo si es un menú raíz) */
-    private Menu menuPadre;
+    /** ID de la pantalla/interfaz asociada al menú */
+    private BigInteger pantallaId;
+    /** ID del módulo al que pertenece este menú */
+    private BigInteger moduloId;
+    /** ID del menú padre (nulo si es un menú raíz) */
+    private BigInteger menuPadreId;
     /** Icono representativo del menú (ej: "fa-home", "fa-user") */
     private String icono;
     /** Estado actual del menú (ACTIVO o INACTIVO) */
@@ -66,21 +66,21 @@ public class Menu {
      * @param nombre        Nombre del menú
      * @param jerarquia     Nivel jerárquico
      * @param orden         Posición en el nivel
-     * @param pantalla      Pantalla asociada
-     * @param modulo        Módulo propietario
-     * @param MenuPadre     Menú padre (puede ser nulo)
+    * @param pantallaId    ID de pantalla asociada
+    * @param moduloId      ID del módulo propietario
+    * @param menuPadreId   ID del menú padre (puede ser nulo)
      * @param estado        Estado actual
      * @param icono         Icono representativo
      */
-    public Menu(BigInteger menuId,String nombre, BigInteger jerarquia, BigInteger orden, Pantalla pantalla, Modulo modulo, Menu MenuPadre,
-                Estado estado, String icono) {
+    public Menu(BigInteger menuId, String nombre, BigInteger jerarquia, BigInteger orden, BigInteger pantallaId,
+                BigInteger moduloId, BigInteger menuPadreId, Estado estado, String icono) {
         this.menuId = menuId;
         this.jerarquia = jerarquia;
         this.orden = orden;
-        this.pantalla = pantalla;
-        this.menuPadre = MenuPadre;
+        this.pantallaId = pantallaId;
+        this.menuPadreId = menuPadreId;
         this.icono= icono;
-        this.modulo=modulo;
+        this.moduloId = moduloId;
         this.estado=estado;
         this.nombre=nombre;
     }
@@ -92,19 +92,20 @@ public class Menu {
      * @param nombre        Nombre del menú
      * @param jerarquia     Nivel jerárquico
      * @param orden         Posición en el nivel
-     * @param pantalla      Pantalla asociada
-     * @param modulo        Módulo propietario
-     * @param MenuPadre     Menú padre (puede ser nulo)
+    * @param pantallaId    ID de pantalla asociada
+    * @param moduloId      ID del módulo propietario
+    * @param menuPadreId   ID del menú padre (puede ser nulo)
      * @param estado        Estado actual
      * @param icono         Icono representativo
      */
-    public Menu(String nombre,BigInteger jerarquia, BigInteger orden, Pantalla pantalla, Modulo modulo, Menu MenuPadre, Estado estado, String icono) {
+    public Menu(String nombre, BigInteger jerarquia, BigInteger orden, BigInteger pantallaId,
+                BigInteger moduloId, BigInteger menuPadreId, Estado estado, String icono) {
         this.jerarquia = jerarquia;
         this.orden = orden;
-        this.pantalla = pantalla;
-        this.menuPadre = MenuPadre;
+        this.pantallaId = pantallaId;
+        this.menuPadreId = menuPadreId;
         this.icono= icono;
-        this.modulo=modulo;
+        this.moduloId = moduloId;
         this.estado=estado;
         this.nombre=nombre;
     }
@@ -118,20 +119,21 @@ public class Menu {
      * @param nombre        Nuevo nombre
      * @param jerarquia     Nuevo nivel jerárquico
      * @param orden         Nueva posición
-     * @param pantalla      Nueva pantalla asociada
-     * @param modulo        Nuevo módulo
-     * @param MenuPadre     Nuevo menú padre
+    * @param pantallaId    ID de pantalla asociada
+    * @param moduloId      ID del módulo
+    * @param menuPadreId   ID del menú padre
      * @param estado        Nuevo estado
      * @param icono         Nuevo icono
      */
-    public void actualizar(String nombre,BigInteger jerarquia, BigInteger orden, Pantalla pantalla, Modulo modulo, Menu MenuPadre, Estado estado, String icono){
+    public void actualizar(String nombre, BigInteger jerarquia, BigInteger orden, BigInteger pantallaId,
+                           BigInteger moduloId, BigInteger menuPadreId, Estado estado, String icono){
         this.nombre=nombre;
         this.jerarquia = jerarquia;
         this.orden = orden;
-        this.pantalla = pantalla;
-        this.menuPadre = MenuPadre;
+        this.pantallaId = pantallaId;
+        this.menuPadreId = menuPadreId;
         this.icono= icono;
-        this.modulo=modulo;
+        this.moduloId = moduloId;
         this.estado=estado;
     }
 
@@ -171,7 +173,7 @@ public class Menu {
         }
         
         // 4. Validar módulo (obligatorio)
-        if (modulo == null) {
+        if (moduloId == null) {
             throw new SecurityValidationException("El menú debe tener un módulo asociado");
         }
         
@@ -182,7 +184,7 @@ public class Menu {
 
         
         // 7. Si es submenú (menuPadre no nulo), validar que existe
-        if (menuPadre != null && menuPadre.getMenuId() == null) {
+        if (menuPadreId != null && menuPadreId.compareTo(BigInteger.ZERO) <= 0) {
             throw new SecurityValidationException("El menú padre debe tener un ID válido");
         }
     }
@@ -261,35 +263,35 @@ public class Menu {
     }
 
     /**
-     * Obtiene la pantalla asociada al menú.
-     * @return pantalla UI del menú
+     * Obtiene el ID de la pantalla asociada al menú.
+     * @return ID de pantalla
      */
-    public Pantalla getPantalla() {
-        return pantalla;
+    public BigInteger getPantallaId() {
+        return pantallaId;
     }
 
     /**
-     * Establece la pantalla del menú.
-     * @param pantalla pantalla a asociar
+     * Establece el ID de la pantalla del menú.
+     * @param pantallaId ID de pantalla a asociar
      */
-    public void setPantalla(Pantalla pantalla) {
-        this.pantalla = pantalla;
+    public void setPantallaId(BigInteger pantallaId) {
+        this.pantallaId = pantallaId;
     }
 
     /**
-     * Obtiene el menú padre (para submenús).
-     * @return menú padre o null si es menú raíz
+     * Obtiene el ID del menú padre (para submenús).
+     * @return ID del menú padre o null si es menú raíz
      */
-    public Menu getMenuPadre() {
-        return menuPadre;
+    public BigInteger getMenuPadreId() {
+        return menuPadreId;
     }
 
     /**
-     * Establece el menú padre.
-     * @param menuPadre menú padre a establecer
+     * Establece el ID del menú padre.
+     * @param menuPadreId ID del menú padre a establecer
      */
-    public void setMenuPadre(Menu menuPadre) {
-        this.menuPadre = menuPadre;
+    public void setMenuPadreId(BigInteger menuPadreId) {
+        this.menuPadreId = menuPadreId;
     }
 
     /**
@@ -309,19 +311,19 @@ public class Menu {
     }
 
     /**
-     * Obtiene el módulo propietario del menú.
-     * @return módulo asociado
+     * Obtiene el ID del módulo propietario del menú.
+     * @return ID del módulo
      */
-    public Modulo getModulo() {
-        return modulo;
+    public BigInteger getModuloId() {
+        return moduloId;
     }
 
     /**
-     * Establece el módulo del menú.
-     * @param modulo módulo a asociar
+     * Establece el ID del módulo del menú.
+     * @param moduloId ID del módulo a asociar
      */
-    public void setModulo(Modulo modulo) {
-        this.modulo = modulo;
+    public void setModuloId(BigInteger moduloId) {
+        this.moduloId = moduloId;
     }
 
     /**
@@ -373,9 +375,9 @@ public class Menu {
                 "menuId=" + menuId +
                 ", jerarquia=" + jerarquia +
                 ", orden=" + orden +
-                ", pantalla=" + pantalla +
-                ", modulo=" + modulo +
-                ", menuIdPadre=" + menuPadre +
+                ", pantallaId=" + pantallaId +
+                ", moduloId=" + moduloId +
+                ", menuPadreId=" + menuPadreId +
                 ", icono='" + icono + '\'' +
                 ", estado=" + estado +
                 '}';

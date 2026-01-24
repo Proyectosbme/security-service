@@ -1,8 +1,6 @@
 package security.framework.output.mapper;
 
 import security.dominio.entidades.Menu;
-import security.dominio.entidades.Modulo;
-import security.dominio.entidades.Pantalla;
 import security.dominio.vo.Estado;
 import security.framework.output.persistence.MenuJpaEntity;
 import org.mapstruct.Mapper;
@@ -32,12 +30,11 @@ import java.math.BigInteger;
  * </ul>
  *
  * <h3>Conversión de relaciones</h3>
- * Las relaciones como Pantalla, Modulo y MenuPadre se manejan únicamente
- * mediante sus identificadores:
+ * Las relaciones se manejan únicamente mediante sus identificadores:
  *
  * <ul>
- *   <li>DOMINIO → JPA: se extrae el ID del objeto</li>
- *   <li>JPA → DOMINIO: se construye una referencia parcial usando el ID</li>
+ *   <li>DOMINIO → JPA: se asignan los IDs directamente</li>
+ *   <li>JPA → DOMINIO: se asignan los IDs directamente</li>
  * </ul>
  *
  * <h3>Estados</h3>
@@ -83,9 +80,9 @@ public interface MenuOutputMapper {
      * @return Entidad JPA lista para ser persistida
      */
     @Mapping(target = "id", source = "menuId")
-    @Mapping(target = "codPantalla", source = "pantalla", qualifiedByName = "pantallaToId")
-    @Mapping(target = "codModulo", source = "modulo", qualifiedByName = "moduloToId")
-    @Mapping(target = "codMenuPadre", source = "menuPadre", qualifiedByName = "menuToId")
+    @Mapping(target = "codPantalla", source = "pantallaId")
+    @Mapping(target = "codModulo", source = "moduloId")
+    @Mapping(target = "codMenuPadre", source = "menuPadreId")
     @Mapping(target = "estado", source = "estado", qualifiedByName = "estadoToCodigoJpa")
     MenuJpaEntity toJpaEntity(Menu menu);//a entidad JPA desde Menu
 
@@ -108,9 +105,9 @@ public interface MenuOutputMapper {
      * @return Entidad de dominio Menu
      */
     @Mapping(target = "menuId", source = "id")
-    @Mapping(target = "pantalla", source = "codPantalla", qualifiedByName = "pantallaFromId")
-    @Mapping(target = "modulo", source = "codModulo", qualifiedByName = "moduloFromId")
-    @Mapping(target = "menuPadre", source = "codMenuPadre", qualifiedByName = "menuFromId")
+    @Mapping(target = "pantallaId", source = "codPantalla")
+    @Mapping(target = "moduloId", source = "codModulo")
+    @Mapping(target = "menuPadreId", source = "codMenuPadre")
     @Mapping(target = "estado", source = "estado", qualifiedByName = "codigoToEstado")
     Menu toDomain(MenuJpaEntity entity);//a Menu  desde entidad JPA
 
@@ -131,122 +128,11 @@ public interface MenuOutputMapper {
      * @param entity Entidad JPA existente a actualizar
      */
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "codPantalla", source = "pantalla", qualifiedByName = "pantallaToId")
-    @Mapping(target = "codModulo", source = "modulo", qualifiedByName = "moduloToId")
-    @Mapping(target = "codMenuPadre", source = "menuPadre", qualifiedByName = "menuToId")
+    @Mapping(target = "codPantalla", source = "pantallaId")
+    @Mapping(target = "codModulo", source = "moduloId")
+    @Mapping(target = "codMenuPadre", source = "menuPadreId")
     @Mapping(target = "estado", source = "estado", qualifiedByName = "estadoToCodigoJpa")
     void applyToEntity(Menu domain, @MappingTarget MenuJpaEntity entity);
-
-    // =====================
-    // CONSTRUCTORES PARCIALES
-    // =====================
-
-    /**
-     * Construye una referencia parcial de Pantalla a partir de su identificador.
-     *
-     * <p>
-     * No se realiza ninguna consulta a la base de datos.
-     * El objeto resultante representa únicamente una referencia
-     * al agregado Pantalla.
-     * </p>
-     *
-     * @param codPantalla Identificador de la pantalla
-     * @return Referencia parcial de Pantalla o {@code null} si el código es nulo
-     */
-    @Named("pantallaFromId")
-    default Pantalla pantallaFromId(BigInteger codPantalla) {
-        if (codPantalla == null) return null;
-        Pantalla p = new Pantalla();
-        p.setId(codPantalla.longValue());
-        return p;
-    }
-
-    /**
-     * Construye una referencia parcial de Modulo a partir de su identificador.
-     *
-     * <p>
-     * Se utiliza para reconstruir el dominio sin cargar el agregado completo.
-     * </p>
-     *
-     * @param codModulo Identificador del módulo
-     * @return Referencia parcial de Modulo o {@code null} si el código es nulo
-     */
-    @Named("moduloFromId")
-    default Modulo moduloFromId(BigInteger codModulo) {
-        if (codModulo == null) return null;
-        Modulo m = new Modulo();
-        m.setId(codModulo);
-        return m;
-    }
-
-    /**
-     * Construye una referencia parcial de Menu que representa al menú padre.
-     *
-     * <p>
-     * El menú resultante contiene únicamente su identificador
-     * y se utiliza para mantener la relación jerárquica.
-     * </p>
-     *
-     * @param codMenuPadre Identificador del menú padre
-     * @return Referencia parcial de Menu o {@code null} si el código es nulo
-     */
-    @Named("menuFromId")
-    default Menu menuFromId(BigInteger codMenuPadre) {
-        if (codMenuPadre == null) return null;
-        Menu m = new Menu();
-        m.setMenuId(codMenuPadre);
-        return m;
-    }
-
-    /**
-     * Extrae el identificador de una Pantalla de dominio.
-     *
-     * <p>
-     * Se utiliza durante la conversión de dominio a JPA
-     * para persistir la relación mediante su ID.
-     * </p>
-     *
-     * @param pantalla Objeto Pantalla del dominio
-     * @return Identificador de la pantalla o {@code null} si no existe
-     */
-
-    @Named("pantallaToId")
-    default BigInteger pantallaToId(Pantalla pantalla) {
-        return pantalla != null ? BigInteger.valueOf(pantalla.getId()): null;
-    }
-
-    /**
-     * Extrae el identificador de un Modulo de dominio.
-     *
-     * @param modulo Objeto Modulo del dominio
-     * @return Identificador del módulo o {@code null} si no existe
-     */
-    /**
-     * Extrae el identificador de un Modulo de dominio.
-     *
-     * @param modulo Objeto Modulo del dominio
-     * @return Identificador del módulo o {@code null} si no existe
-     */
-    @Named("moduloToId")
-    default BigInteger moduloToId(Modulo modulo) {
-        return modulo != null ? modulo.getId(): null;
-    }
-
-    /**
-     * Extrae el identificador de un Menu (menú padre) de dominio.
-     * 
-     * <p>
-     * Se utiliza durante la conversión de dominio a JPA para persistir
-     * la relación jerárquica mediante el ID del menú padre.
-     * </p>
-     *
-     * @param menu Objeto Menu del dominio
-     * @return Identificador del menú o {@code null} si no existe
-     */
-    @Named("menuToId")
-    default BigInteger menuToId(Menu menu) {
-        return menu != null ? menu.getMenuId() : null;
-    }
 
     /**
      * Convierte un Estado de dominio a su código numérico para persistencia.

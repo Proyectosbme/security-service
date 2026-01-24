@@ -64,24 +64,24 @@ public class CrearMenuUseCase {
         menu.validar();
         
         // 2. Verificar que Pantalla existe (si viene seteada)
-        if (menu.getPantalla() != null && menu.getPantalla().getId() != null) {
-            pantallaRepository.findById(menu.getPantalla().getId())
+        if (menu.getPantallaId() != null) {
+            pantallaRepository.findById(menu.getPantallaId().longValue())
                     .orElseThrow(() -> new SecurityNotFoundException(
-                            "Pantalla no encontrada con ID: " + menu.getPantalla().getId()));
+                    "Pantalla no encontrada con ID: " + menu.getPantallaId()));
         }
         
         // 3. Verificar que Módulo existe (si viene seteado)
-        if (menu.getModulo() != null && menu.getModulo().getId() != null) {
-            moduloRepository.findById(menu.getModulo().getId().longValue())
+        if (menu.getModuloId() != null) {
+            moduloRepository.findById(menu.getModuloId().longValue())
                     .orElseThrow(() -> new SecurityNotFoundException(
-                            "Módulo no encontrado con ID: " + menu.getModulo().getId()));
+                    "Módulo no encontrado con ID: " + menu.getModuloId()));
         }
         
         // 4. Verificar que MenuPadre existe (si viene seteado)
-        if (menu.getMenuPadre() != null && menu.getMenuPadre().getId() != null) {
-            menuRepository.findById(menu.getMenuPadre().getId().longValue())
+        if (menu.getMenuPadreId() != null) {
+            menuRepository.findById(menu.getMenuPadreId().longValue())
                     .orElseThrow(() -> new SecurityNotFoundException(
-                            "Menú Padre no encontrado con ID: " + menu.getMenuPadre().getId()));
+                    "Menú Padre no encontrado con ID: " + menu.getMenuPadreId()));
         }
         
         // 5. Persistir menú en BD

@@ -6,7 +6,15 @@ import java.util.List;
  * DTO de Aplicación: MenuJerarquico
  * 
  * Representa la estructura jerárquica de menús en la capa de aplicación.
- * No depende del framework (no tiene anotaciones REST/JSON).
+ * 
+ * Responsabilidad:
+ * 1. Modelar nodos de menú (padre/hijos)
+ * 2. Transportar datos hacia la capa de entrada
+ * 
+ * Patrón: DTO
+ * 
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public class MenuJerarquico {
     
