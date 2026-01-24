@@ -20,38 +20,44 @@ import security.aplication.usecase.CrearPerfilUseCase;
 import security.aplication.usecase.EliminarPerfilUseCase;
 
 /**
- * Configuración de Aplicación: ApplicationConfig
- * 
- * Clase de configuración de Quarkus CDI que:
- * - Inyecta las implementaciones de repositorios
- * - Produce instancias de servicios singleton
- * - Gestiona las dependencias entre capas
- * 
- * Patrón: Factory / Producer
- * Responsabilidad: Crear e inyectar servicios en el contenedor CDI
- * 
- * Flujo:
- * Quarkus CDI → ApplicationConfig → Produces Services → Controllers
+ * Configuración de aplicación para el contenedor CDI de Quarkus.
+ * <p>
+ * Esta clase actúa como fábrica/producer de servicios de la capa de aplicación,
+ * resolviendo dependencias y exponiendo instancias singleton para inyección.
+ * </p>
+ * <p>
+ * Responsabilidades principales:
+ * </p>
+ * <ul>
+ *   <li>Inyectar implementaciones de repositorios.</li>
+ *   <li>Producir servicios como puertos de entrada.</li>
+ *   <li>Gestionar dependencias entre capas (hexagonal).</li>
+ * </ul>
+ * <p>
+ * Flujo: Quarkus CDI → ApplicationConfig → servicios producidos → controladores.
+ * </p>
  */
 @ApplicationScoped
 public class ApplicationConfig {
-    /** Repositorio de menús inyectado por CDI */
+    /** Repositorio de menús inyectado por CDI. */
     private final MenuRepository menuRepository;
-    /** Repositorio de módulos inyectado por CDI */
+    /** Repositorio de módulos inyectado por CDI. */
     private final ModuloRepository moduloRepository;
-    /** Repositorio de pantallas inyectado por CDI */
+    /** Repositorio de pantallas inyectado por CDI. */
     private final PantallaRepository pantallaRepository;
-    /** Repositorio de perfiles inyectado por CDI */
+    /** Repositorio de perfiles inyectado por CDI. */
     private final PerfilRepository perfilRepository;
 
     /**
      * Constructor con inyección de repositorios.
-     * Quarkus CDI automáticamente inyecta las implementaciones.
-     * 
-     * @param menuRepository Implementación del repositorio de menús
-     * @param moduloRepository Implementación del repositorio de módulos
-     * @param pantallaRepository Implementación del repositorio de pantallas
-     * @param perfilRepository Implementación del repositorio de perfiles
+     * <p>
+     * Quarkus CDI inyecta automáticamente las implementaciones disponibles.
+     * </p>
+     *
+     * @param menuRepository implementación del repositorio de menús
+     * @param moduloRepository implementación del repositorio de módulos
+     * @param pantallaRepository implementación del repositorio de pantallas
+     * @param perfilRepository implementación del repositorio de perfiles
      */
     public ApplicationConfig(MenuRepository menuRepository, ModuloRepository moduloRepository, PantallaRepository pantallaRepository, PerfilRepository perfilRepository) {
         this.menuRepository = menuRepository;
@@ -61,22 +67,16 @@ public class ApplicationConfig {
     }
 
     /**
-     * Produce instancia singleton de MenuInputPort (MenuService).
-     * Anotada con @Produces para inyección en CDI.
-     * 
-     * Patrón Hexagonal:
-     * - MenuService implementa MenuInputPort (puerto de entrada)
-     * - Depende de MenuRepository, ModuloRepository, PantallaRepository (puertos de salida)
-     * - Crea instancias de casos de uso con todas sus dependencias
-     * 
-     * Casos de Uso:
-     * - CrearMenuUseCase: Valida Pantalla, Módulo, MenuPadre y crea menú
-     * - BuscarMenuPorIdUseCase: Busca menú por ID
-     * - ActualizarMenuUseCase: Valida Pantalla, Módulo, MenuPadre y actualiza menú
-     * - EliminarMenuUseCase: Elimina menú por ID
-     * - BuscarMenuPorFiltros: Búsqueda avanzada con criterios
-     * 
-     * @return MenuService configurado con sus repositorios y casos de uso
+     * Produce instancia singleton de {@link MenuInputPort} ({@link MenuService}).
+     * <p>
+     * Patrón hexagonal:
+     * </p>
+     * <ul>
+     *   <li>{@link MenuService} implementa el puerto de entrada {@link MenuInputPort}.</li>
+     *   <li>Depende de {@link MenuRepository}, {@link ModuloRepository} y {@link PantallaRepository}.</li>
+     * </ul>
+     *
+     * @return servicio configurado con sus dependencias
      */
     @Produces
     @ApplicationScoped
@@ -85,10 +85,9 @@ public class ApplicationConfig {
     }
 
     /**
-     * Produce instancia singleton de ModuloInputPort (ModuloService).
-     * Anotada con @Produces para inyección en CDI.
-     * 
-     * @return ModuloService configurado con su repositorio
+     * Produce instancia singleton de {@link ModuloInputPort} ({@link ModuloService}).
+     *
+     * @return servicio configurado con su repositorio
      */
     @Produces
     @ApplicationScoped
@@ -97,15 +96,13 @@ public class ApplicationConfig {
     }
 
     /**
-     * Produce instancia singleton de PantallaInputPort (PantallaService).
-     * Anotada con @Produces para inyección en CDI.
-     * 
-     * Patrón Hexagonal:
-     * - PantallaService implementa PantallaInputPort (puerto de entrada)
-     * - Depende de PantallaRepository (puerto de salida)
-     * - Se inyecta en PantallaController y en clientes del servicio
-     * 
-     * @return PantallaService configurado con su repositorio
+     * Produce instancia singleton de {@link PantallaInputPort} ({@link PantallaService}).
+     * <p>
+     * Patrón hexagonal: el servicio implementa el puerto de entrada y depende del
+     * repositorio como puerto de salida.
+     * </p>
+     *
+     * @return servicio configurado con sus repositorios
      */
     @Produces
     @ApplicationScoped
@@ -114,15 +111,13 @@ public class ApplicationConfig {
     }
 
     /**
-     * Produce instancia singleton de PerfilInputPort (PerfilService).
-     * Anotada con @Produces para inyección en CDI.
-     * 
-     * Patrón Hexagonal:
-     * - PerfilService implementa PerfilInputPort (puerto de entrada)
-     * - Depende de PerfilRepository (puerto de salida)
-     * - Se inyecta en PerfilController y en clientes del servicio
-     * 
-     * @return PerfilService configurado con su repositorio
+     * Produce instancia singleton de {@link PerfilInputPort} ({@link PerfilService}).
+     * <p>
+     * Patrón hexagonal: el servicio implementa el puerto de entrada y depende del
+     * repositorio como puerto de salida.
+     * </p>
+     *
+     * @return servicio configurado con su repositorio
      */
     @Produces
     @ApplicationScoped

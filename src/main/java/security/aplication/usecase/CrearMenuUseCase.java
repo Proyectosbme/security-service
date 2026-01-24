@@ -27,7 +27,7 @@ import security.dominio.exceptions.SecurityNotFoundException;
  * - SecurityValidationException: si datos del menú son inválidos
  * - SecurityNotFoundException: si Pantalla, Módulo o MenuPadre no existen
  * 
- * @author Security Team
+ * @author bme(Bryan Ivan Marroquin)
  * @version 1.0
  */
 public class CrearMenuUseCase {

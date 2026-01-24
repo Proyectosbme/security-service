@@ -6,9 +6,24 @@ import security.dominio.exceptions.SecurityNotFoundException;
 
 /**
  * Caso de Uso: BuscarMenuPorIdUseCase
- * Busca un menú existente por su identificador.
+ * 
+ * Orquesta la búsqueda de un menú por su identificador único.
+ * 
+ * Responsabilidad:
+ * 1. Consultar el repositorio por ID
+ * 2. Retornar el menú si existe
+ * 3. Lanzar excepción si no existe
+ * 
  * Patrón: Use Case / Query Pattern
- * Lanza excepción si no existe
+ * 
+ * Flujo:
+ * Buscar → Validar existencia → Retornar
+ * 
+ * Excepciones:
+ * - SecurityNotFoundException: si el menú no existe
+ * 
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public class BuscarMenuPorIdUseCase {
     private final MenuRepository menuRepository;

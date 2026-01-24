@@ -6,24 +6,23 @@ import security.dominio.exceptions.SecurityNotFoundException;
 /**
  * Caso de Uso: EliminarPantallaUseCase
  * 
- * Responsabilidad: Eliminar una pantalla existente.
+ * Orquesta la eliminación de una pantalla existente.
+ * 
+ * Responsabilidad:
+ * 1. Validar el identificador
+ * 2. Verificar existencia
+ * 3. Eliminar registro en BD
+ * 
+ * Patrón: Use Case / Command Pattern
  * 
  * Flujo:
- * 1. Recibir ID de pantalla (desde Controller)
- * 2. Validar que pantalla existe
- * 3. Eliminar de BD mediante PantallaRepository
- * 4. Confirmar eliminación exitosa
+ * Validar ID → Verificar existencia → Eliminar
  * 
- * Validaciones:
- * - ID debe ser válido
- * - Pantalla debe existir antes de eliminar
+ * Excepciones:
+ * - SecurityNotFoundException: si la pantalla no existe
  * 
- * Auditoría:
- * - No se registra auditoría de eliminación en esta versión
- * - TODO: Considerar soft-delete con userEliminado/fechaEliminado si se requiere
- * 
- * @param id Identificador único de pantalla
- * @throws SecurityNotFoundException si pantalla no existe
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public class EliminarPantallaUseCase {
     

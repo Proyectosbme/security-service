@@ -9,18 +9,24 @@ import java.util.*;
 /**
  * Caso de Uso: ObtenerMenusJerarquicosPorPerfilUseCase
  * 
- * Responsabilidad: Construir la estructura jerárquica de menús de un perfil.
+ * Orquesta la construcción de la estructura jerárquica de menús para un perfil.
  * 
- * Algoritmo:
- * 1. Obtener registros de la vista vw_menu_perfil
- * 2. Crear mapa de nodos (idMenu → MenuJerarquico)
- * 3. Construir relaciones padre-hijo basándose en menuPadre
- * 4. Ordenar recursivamente por campo 'orden'
+ * Responsabilidad:
+ * 1. Obtener registros desde la vista de perfil
+ * 2. Crear nodos jerárquicos
+ * 3. Vincular relaciones padre-hijo
+ * 4. Ordenar recursivamente por el campo de orden
  * 
- * Patrón: Use Case (Clean Architecture)
- * - Lógica de negocio encapsulada
- * - Independiente del framework
- * - Fácilmente testeable
+ * Patrón: Use Case / Query Pattern
+ * 
+ * Flujo:
+ * Consultar → Construir jerarquía → Ordenar → Retornar
+ * 
+ * Excepciones:
+ * - Ninguna
+ * 
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public class ObtenerMenusJerarquicosPorPerfilUseCase {
     

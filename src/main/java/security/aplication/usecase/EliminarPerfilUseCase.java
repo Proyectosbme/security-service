@@ -10,14 +10,21 @@ import java.util.Optional;
 /**
  * Caso de Uso: EliminarPerfilUseCase
  * 
- * Responsabilidad: Eliminar un perfil existente.
+ * Orquesta la eliminación de un perfil existente.
+ * 
+ * Responsabilidad:
+ * 1. Verificar existencia del perfil
+ * 2. Eliminar registro en BD
+ * 
+ * Patrón: Use Case / Command Pattern
  * 
  * Flujo:
- * 1. Recibir ID de perfil
- * 2. Verificar que perfil existe
- * 3. Eliminar de BD
+ * Verificar existencia → Eliminar
  * 
- * @author Security Team
+ * Excepciones:
+ * - SecurityNotFoundException: si el perfil no existe
+ * 
+ * @author bme(Bryan Ivan Marroquin)
  * @version 1.0
  */
 public class EliminarPerfilUseCase {

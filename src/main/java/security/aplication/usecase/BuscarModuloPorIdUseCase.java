@@ -6,8 +6,24 @@ import security.dominio.exceptions.SecurityNotFoundException;
 
 /**
  * Caso de Uso: BuscarModuloPorIdUseCase
- * Busca un módulo existente por su identificador.
+ * 
+ * Orquesta la búsqueda de un módulo por su identificador.
+ * 
+ * Responsabilidad:
+ * 1. Consultar el repositorio por ID
+ * 2. Retornar el módulo si existe
+ * 3. Lanzar excepción si no existe
+ * 
  * Patrón: Use Case / Query Pattern
+ * 
+ * Flujo:
+ * Buscar → Validar existencia → Retornar
+ * 
+ * Excepciones:
+ * - SecurityNotFoundException: si el módulo no existe
+ * 
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public class BuscarModuloPorIdUseCase {
     private final ModuloRepository moduloRepository;

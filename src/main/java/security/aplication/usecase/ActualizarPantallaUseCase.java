@@ -10,33 +10,26 @@ import java.time.LocalDateTime;
 /**
  * Caso de Uso: ActualizarPantallaUseCase
  * 
- * Responsabilidad: Actualizar datos de una pantalla existente.
+ * Orquesta la actualización de una pantalla existente con validación y auditoría.
+ * 
+ * Responsabilidad:
+ * 1. Validar existencia de la pantalla
+ * 2. Validar nuevos datos
+ * 3. Preservar auditoría de creación
+ * 4. Registrar auditoría de modificación
+ * 5. Persistir cambios
+ * 
+ * Patrón: Use Case / Command Pattern
  * 
  * Flujo:
- * 1. Recibir ID y datos nuevos de pantalla (desde Controller)
- * 2. Validar que pantalla existe
- * 3. Validar nuevos datos (URL no vacía, etc)
- * 4. Preservar auditoría de creación (userC, fechaC)
- * 5. Registrar auditoría de modificación (userMod, fechaMod)
- * 6. Actualizar en BD
- * 7. Retornar pantalla actualizada
+ * Verificar existencia → Validar → Auditar modificación → Actualizar
  * 
- * Validaciones:
- * - ID debe corresponder a pantalla existente
- * - URL no puede estar vacía
- * - Módulo debe ser válido
+ * Excepciones:
+ * - SecurityNotFoundException: si la pantalla no existe
+ * - SecurityValidationException: si datos inválidos
  * 
- * Auditoría:
- * - Preserva userC: No se modifica (auditoría original)
- * - Preserva fechaC: No se modifica (auditoría original)
- * - Registra userMod: Usuario que realiza cambios
- * - Registra fechaMod: LocalDateTime.now()
- * 
- * @param id ID de pantalla a actualizar
- * @param pantallaNueva Pantalla con datos actualizados
- * @return Pantalla actualizada
- * @throws SecurityNotFoundException si pantalla no existe
- * @throws SecurityValidationException si datos inválidos
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public class ActualizarPantallaUseCase {
     

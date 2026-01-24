@@ -7,14 +7,24 @@ import java.math.BigInteger;
 import java.util.Optional;
 
 /**
- * Caso de Uso: AsignarMenuAPerfilUseCase 
- * Responsabilidad: Crear la relación entre un menú y un perfil.
+ * Caso de Uso: AsignarMenuAPerfilUseCase
  * 
- * Reglas de negocio:
- * - Crea una nueva asociación menu-perfil
- * - Ambos IDs deben ser válidos (no se valida existencia aquí, se delega a BD con FK)
+ * Orquesta la creación de la relación entre un menú y un perfil.
  * 
- * Patrón: Use Case (Clean Architecture)
+ * Responsabilidad:
+ * 1. Construir la asociación menú-perfil
+ * 2. Persistir relación en BD
+ * 
+ * Patrón: Use Case / Command Pattern
+ * 
+ * Flujo:
+ * Construir relación → Persistir
+ * 
+ * Excepciones:
+ * - Ninguna
+ * 
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public class AsignarMenuAPerfilUseCase {
     

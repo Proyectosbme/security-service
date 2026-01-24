@@ -5,9 +5,23 @@ import security.dominio.entidades.Modulo;
 
 /**
  * Caso de Uso: CrearModuloUseCase
- * Crea un nuevo módulo validando reglas de negocio.
+ * 
+ * Orquesta la creación de un módulo con validación de reglas de negocio.
+ * 
+ * Responsabilidad:
+ * 1. Validar datos del módulo
+ * 2. Persistir módulo en BD
+ * 
  * Patrón: Use Case / Command Pattern
- * Flujo: Validar → Persistir
+ * 
+ * Flujo:
+ * Validar → Persistir
+ * 
+ * Excepciones:
+ * - SecurityValidationException: si datos del módulo son inválidos
+ * 
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public class CrearModuloUseCase {
 

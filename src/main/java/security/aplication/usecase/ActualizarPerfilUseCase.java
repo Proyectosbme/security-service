@@ -10,20 +10,23 @@ import java.math.BigInteger;
 /**
  * Caso de Uso: ActualizarPerfilUseCase
  * 
- * Responsabilidad: Actualizar datos de un perfil existente.
+ * Orquesta la actualización de un perfil existente con validación.
+ * 
+ * Responsabilidad:
+ * 1. Verificar existencia del perfil
+ * 2. Validar nuevos datos
+ * 3. Actualizar perfil en BD
+ * 
+ * Patrón: Use Case / Command Pattern
  * 
  * Flujo:
- * 1. Recibir ID y datos nuevos de perfil
- * 2. Validar que perfil existe
- * 3. Validar nuevos datos
- * 4. Actualizar en BD
- * 5. Retornar perfil actualizado
+ * Verificar existencia → Validar → Actualizar
  * 
- * Validaciones:
- * - ID debe corresponder a perfil existente
- * - Nombre no puede estar vacío
+ * Excepciones:
+ * - SecurityNotFoundException: si el perfil no existe
+ * - SecurityValidationException: si datos inválidos
  * 
- * @author Security Team
+ * @author bme(Bryan Ivan Marroquin)
  * @version 1.0
  */
 public class ActualizarPerfilUseCase {

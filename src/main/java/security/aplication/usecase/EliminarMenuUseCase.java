@@ -5,9 +5,23 @@ import security.dominio.exceptions.SecurityNotFoundException;
 
 /**
  * Caso de Uso: EliminarMenuUseCase
- * Elimina un menú verificando su existencia.
+ * 
+ * Orquesta la eliminación de un menú existente.
+ * 
+ * Responsabilidad:
+ * 1. Verificar existencia del menú
+ * 2. Eliminar registro en BD
+ * 
  * Patrón: Use Case / Command Pattern
- * Flujo: Verificar existencia → Eliminar de BD
+ * 
+ * Flujo:
+ * Validar existencia → Eliminar
+ * 
+ * Excepciones:
+ * - SecurityNotFoundException: si el menú no existe
+ * 
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public class EliminarMenuUseCase {
 

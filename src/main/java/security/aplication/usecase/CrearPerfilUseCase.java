@@ -7,19 +7,22 @@ import security.dominio.exceptions.SecurityValidationException;
 /**
  * Caso de Uso: CrearPerfilUseCase
  * 
- * Responsabilidad: Crear un nuevo perfil con validación de negocio.
+ * Orquesta la creación de un perfil con validación de negocio.
+ * 
+ * Responsabilidad:
+ * 1. Validar datos del perfil
+ * 2. Persistir perfil en BD
+ * 3. Retornar perfil creado
+ * 
+ * Patrón: Use Case / Command Pattern
  * 
  * Flujo:
- * 1. Recibir datos de perfil
- * 2. Validar datos (nombre no vacío)
- * 3. Persistir en BD
- * 4. Retornar perfil creado con ID asignado
+ * Validar → Persistir → Retornar
  * 
- * Validaciones:
- * - Perfil no nulo
- * - Nombre no vacío
+ * Excepciones:
+ * - SecurityValidationException: si datos del perfil son inválidos
  * 
- * @author Security Team
+ * @author bme(Bryan Ivan Marroquin)
  * @version 1.0
  */
 public class CrearPerfilUseCase {

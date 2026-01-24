@@ -9,27 +9,23 @@ import java.time.LocalDateTime;
 /**
  * Caso de Uso: CrearPantallaUseCase
  * 
- * Responsabilidad: Crear una nueva pantalla con validación de negocio.
+ * Orquesta la creación de una pantalla con validación y auditoría básica.
+ * 
+ * Responsabilidad:
+ * 1. Validar datos de pantalla
+ * 2. Registrar auditoría de creación
+ * 3. Persistir pantalla en BD
+ * 
+ * Patrón: Use Case / Command Pattern
  * 
  * Flujo:
- * 1. Recibir datos de pantalla (desde Controller)
- * 2. Validar datos (URL no vacía, módulo válido, etc)
- * 3. Registrar auditoría (usuario y fecha de creación)
- * 4. Persistir en BD mediante PantallaRepository
- * 5. Retornar pantalla creada con ID asignado
+ * Validar → Auditar creación → Persistir
  * 
- * Validaciones:
- * - Pantalla no nula
- * - URL no vacía
- * - Módulo debe estar referenciado
+ * Excepciones:
+ * - SecurityValidationException: si datos de pantalla son inválidos
  * 
- * Auditoría:
- * - Registra userC: Usuario que crea (debe venir del contexto de seguridad)
- * - Registra fechaC: LocalDateTime.now()
- * 
- * @param pantalla Pantalla con datos de entrada (sin ID, sin auditoría)
- * @return Pantalla creada con ID asignado por BD
- * @throws SecurityValidationException si datos inválidos
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public class CrearPantallaUseCase {
     

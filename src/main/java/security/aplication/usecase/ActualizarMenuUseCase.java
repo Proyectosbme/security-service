@@ -27,7 +27,7 @@ import security.dominio.exceptions.SecurityNotFoundException;
  * - SecurityValidationException: si datos del menú son inválidos
  * - SecurityNotFoundException: si Pantalla, Módulo, MenuPadre o el Menu a actualizar no existen
  * 
- * @author Security Team
+ * @author bme(Bryan Ivan Marroquin)
  * @version 1.0
  */
 public class ActualizarMenuUseCase {

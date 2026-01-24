@@ -9,14 +9,22 @@ import java.math.BigInteger;
 /**
  * Caso de Uso: BuscarPerfilPorIdUseCase
  * 
- * Responsabilidad: Buscar un perfil por su ID.
+ * Orquesta la búsqueda de un perfil por su identificador.
+ * 
+ * Responsabilidad:
+ * 1. Consultar el repositorio por ID
+ * 2. Retornar perfil encontrado
+ * 3. Lanzar excepción si no existe
+ * 
+ * Patrón: Use Case / Query Pattern
  * 
  * Flujo:
- * 1. Recibir ID de perfil
- * 2. Buscar en repositorio
- * 3. Retornar perfil encontrado o lanzar excepción
+ * Buscar → Validar existencia → Retornar
  * 
- * @author Security Team
+ * Excepciones:
+ * - SecurityNotFoundException: si el perfil no existe
+ * 
+ * @author bme(Bryan Ivan Marroquin)
  * @version 1.0
  */
 public class BuscarPerfilPorIdUseCase {

@@ -7,25 +7,23 @@ import security.dominio.exceptions.SecurityNotFoundException;
 /**
  * Caso de Uso: BuscarPantallaPorIdUseCase
  * 
- * Responsabilidad: Buscar una pantalla específica por su identificador único.
+ * Orquesta la búsqueda de una pantalla por su identificador.
+ * 
+ * Responsabilidad:
+ * 1. Validar el identificador
+ * 2. Consultar el repositorio
+ * 3. Retornar pantalla encontrada
+ * 
+ * Patrón: Use Case / Query Pattern
  * 
  * Flujo:
- * 1. Recibir ID de pantalla (desde Controller)
- * 2. Consultar BD mediante PantallaRepository
- * 3. Validar que pantalla existe
- * 4. Retornar pantalla encontrada
- * 5. Si no existe, lanzar SecurityNotFoundException
+ * Validar ID → Buscar → Retornar
  * 
- * Validaciones:
- * - ID no nulo y válido
- * - Pantalla debe existir en BD
+ * Excepciones:
+ * - SecurityNotFoundException: si la pantalla no existe
  * 
- * Excepción:
- * - SecurityNotFoundException: Cuando pantalla no existe
- * 
- * @param id Identificador único de pantalla
- * @return Pantalla encontrada
- * @throws SecurityNotFoundException si pantalla no existe
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public class BuscarPantallaPorIdUseCase {
     
