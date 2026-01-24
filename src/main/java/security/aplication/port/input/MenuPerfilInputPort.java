@@ -7,53 +7,55 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- * Puerto de Entrada: MenuPerfilInputPort
+ * Puerto de Entrada (Input Port): MenuPerfilInputPort
  * 
- * Define las operaciones disponibles para gestión de relaciones menú-perfil.
+ * Define el contrato de aplicación para la gestión de relaciones menú-perfil.
  * 
- * Patrón Hexagonal:
- * - Puerto de entrada para la capa de aplicación
- * - Implementado por MenuPerfilService
- * - Invocado desde MenuPerfilController
+ * Responsabilidad:
+ * 1. Exponer operaciones de asignación y consulta
+ * 2. Construir menús jerárquicos por perfil
+ * 3. Mantener la independencia de la infraestructura
  * 
- * Operaciones:
- * - asignar(): Asignar menú a perfil
- * - buscarPorPerfil(): Obtener menús de un perfil
- * - remover(): Eliminar relación menú-perfil
- * - obtenerMenusJerarquicos(): Construir árbol de menús para un perfil
+ * Patrón: Input Port (Arquitectura Hexagonal)
+ * 
+ * Flujo:
+ * Controller → MenuPerfilInputPort → MenuPerfilService → UseCases → Repositorios
+ * 
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public interface MenuPerfilInputPort {
     
     /**
-     * Asigna un menú a un perfil
+     * Asigna un menú a un perfil.
      * 
-     * @param menuId ID del menú
-     * @param perfilId ID del perfil
-     * @return MenuPerfil creado
+     * @param menuId identificador del menú
+     * @param perfilId identificador del perfil
+     * @return relación menú-perfil creada
      */
     MenuPerfil asignar(BigInteger menuId, BigInteger perfilId);
     
     /**
-     * Busca todos los menús asignados a un perfil
+     * Busca todos los menús asignados a un perfil.
      * 
-     * @param perfilId ID del perfil
-     * @return Lista de relaciones menú-perfil
+     * @param perfilId identificador del perfil
+     * @return lista de relaciones menú-perfil
      */
     List<MenuPerfil> buscarPorPerfil(BigInteger perfilId);
     
     /**
-     * Remueve un menú de un perfil
+     * Remueve un menú de un perfil.
      * 
-     * @param menuId ID del menú
-     * @param perfilId ID del perfil
+     * @param menuId identificador del menú
+     * @param perfilId identificador del perfil
      */
     void remover(BigInteger menuId, BigInteger perfilId);
     
     /**
-     * Obtiene estructura jerárquica de menús para un perfil
+     * Obtiene estructura jerárquica de menús para un perfil.
      * 
-     * @param perfilId ID del perfil
-     * @return Lista de menús raíz con sus hijos anidados
+     * @param perfilId identificador del perfil
+     * @return lista de menús raíz con sus hijos anidados
      */
     List<MenuJerarquico> obtenerMenusJerarquicos(Long perfilId);
 }

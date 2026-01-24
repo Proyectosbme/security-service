@@ -7,47 +7,59 @@ import java.util.List;
 
 /**
  * Puerto de Entrada (Input Port): ModuloInputPort
- * Interface que define los casos de uso para gestión de Módulos.
- * Arquitectura Hexagonal: lado de entrada (primario)
- * Controller → ModuloInputPort → ModuloService → UseCases → Repository
+ * 
+ * Define el contrato de aplicación para la gestión de módulos.
+ * 
+ * Responsabilidad:
+ * 1. Exponer operaciones de módulo para la capa de entrada
+ * 2. Mantener la independencia de la infraestructura
+ * 
+ * Patrón: Input Port (Arquitectura Hexagonal)
+ * 
+ * Flujo:
+ * Controller → ModuloInputPort → ModuloService → UseCases → Repositorios
+ * 
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public interface ModuloInputPort {
 
     /**
-     * Crea un nuevo módulo validando reglas de negocio.
-     * @param modulo Módulo a crear (sin ID)
-     * @return Modulo creado con ID asignado
-     * @throws SecurityValidationException si es inválido
+     * Crea un nuevo módulo.
+     *
+     * @param modulo módulo a crear (sin ID)
+     * @return módulo creado con ID asignado
      */
     Modulo crear(Modulo modulo);
 
     /**
      * Busca un módulo por su ID.
-     * @param id Identificador del módulo
-     * @return Modulo encontrado
-     * @throws SecurityNotFoundException si no existe
+     *
+     * @param id identificador del módulo
+     * @return módulo encontrado
      */
     Modulo buscarPorId(Long id);
 
     /**
      * Elimina un módulo del sistema.
-     * @param id Identificador del módulo
-     * @throws SecurityNotFoundException si no existe
+     *
+     * @param id identificador del módulo
      */
     void eliminar(Long id);
 
     /**
      * Obtiene todos los módulos disponibles.
-     * @return Lista de todos los módulos
+     *
+     * @return lista de módulos
      */
     List<Modulo> obtenerTodas();
 
     /**
      * Actualiza un módulo existente.
-     * @param id Identificador del módulo
-     * @param Modulo Nuevos datos del módulo
-     * @return Modulo actualizado
-     * @throws SecurityValidationException si datos son inválidos
+     *
+     * @param id identificador del módulo
+     * @param modulo nuevos datos del módulo
+     * @return módulo actualizado
      */
-    Modulo acualizar(Long id, Modulo Modulo);
+    Modulo acualizar(Long id, Modulo modulo);
 }

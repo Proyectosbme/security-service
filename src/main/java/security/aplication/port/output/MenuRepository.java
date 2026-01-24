@@ -8,10 +8,21 @@ import java.util.Optional;
 
 /**
  * Puerto de Salida (Output Port): MenuRepository
- * Interface que define operaciones de persistencia para Menús.
- * Arquitectura Hexagonal: lado de salida (secundario)
- * UseCase → MenuRepository → JPA/Database
- * Implementación: MenuRepositoryQuarkus (framework)
+ * 
+ * Define el contrato de persistencia para menús.
+ * 
+ * Responsabilidad:
+ * 1. Proveer operaciones CRUD de menús
+ * 2. Exponer búsquedas por filtros
+ * 3. Abstraer la tecnología de persistencia
+ * 
+ * Patrón: Repository / Output Port (Arquitectura Hexagonal)
+ * 
+ * Flujo:
+ * UseCase → MenuRepository → Implementación de persistencia
+ * 
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public interface MenuRepository {
     /**

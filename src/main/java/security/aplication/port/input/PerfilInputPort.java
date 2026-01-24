@@ -5,58 +5,60 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- * Puerto de Entrada: PerfilInputPort
+ * Puerto de Entrada (Input Port): PerfilInputPort
  * 
- * Define las operaciones disponibles para gestión de perfiles desde el exterior (Controllers).
+ * Define el contrato de aplicación para la gestión de perfiles.
  * 
- * Patrón Hexagonal:
- * - Puerto de entrada para la capa de aplicación
- * - Implementado por PerfilService
- * - Invocado desde PerfilController
+ * Responsabilidad:
+ * 1. Exponer operaciones CRUD de perfiles
+ * 2. Mantener la independencia de la infraestructura
  * 
- * Operaciones CRUD:
- * - crear(): Crear nuevo perfil
- * - buscarPorId(): Obtener perfil por ID
- * - actualizar(): Modificar perfil existente
- * - eliminar(): Borrar perfil
+ * Patrón: Input Port (Arquitectura Hexagonal)
  * 
- * @author Security Team
+ * Flujo:
+ * Controller → PerfilInputPort → PerfilService → UseCases → Repositorios
+ * 
+ * @author bme(Bryan Ivan Marroquin)
  * @version 1.0
  */
 public interface PerfilInputPort {
     
     /**
      * Crea un nuevo perfil.
-     * 
-     * @param perfil Perfil a crear (sin ID)
-     * @return Perfil creado con ID asignado
+     *
+     * @param perfil perfil a crear (sin ID)
+     * @return perfil creado con ID asignado
      */
     Perfil crear(Perfil perfil);
     
     /**
      * Busca perfil por ID.
-     * 
-     * @param id ID del perfil
-     * @return Perfil encontrado
+     *
+     * @param id identificador del perfil
+     * @return perfil encontrado
      */
     Perfil buscarPorId(BigInteger id);
     
     /**
      * Actualiza perfil existente.
-     * 
-     * @param id ID del perfil a actualizar
-     * @param perfil Perfil con datos actualizados
-     * @return Perfil actualizado
+     *
+     * @param id identificador del perfil
+     * @param perfil nuevos datos del perfil
+     * @return perfil actualizado
      */
     Perfil actualizar(BigInteger id, Perfil perfil);
     
     /**
      * Elimina perfil por ID.
-     * 
-     * @param id ID del perfil a eliminar
+     *
+     * @param id identificador del perfil
      */
     void eliminar(BigInteger id);
 
-
+    /**
+     * Obtiene todos los perfiles.
+     *
+     * @return lista de perfiles
+     */
     List<Perfil> obtenerTodos();
 }

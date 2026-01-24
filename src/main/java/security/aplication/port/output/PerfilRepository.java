@@ -7,22 +7,20 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Puerto de Salida: PerfilRepository
+ * Puerto de Salida (Output Port): PerfilRepository
  * 
- * Define las operaciones de persistencia para perfiles.
+ * Define el contrato de persistencia para perfiles.
  * 
- * Patrón Hexagonal:
- * - Puerto de salida para acceso a datos
- * - Implementado por PerfilRepositoryAdapter (infraestructura)
- * - Usado por UseCases de perfil
+ * Responsabilidad:
+ * 1. Proveer operaciones CRUD de perfiles
+ * 2. Abstraer la tecnología de persistencia
  * 
- * Operaciones:
- * - save(): Guardar nuevo perfil
- * - findById(): Buscar por ID
- * - update(): Actualizar perfil existente
- * - deleteById(): Eliminar perfil
+ * Patrón: Repository / Output Port (Arquitectura Hexagonal)
  * 
- * @author Security Team
+ * Flujo:
+ * UseCase → PerfilRepository → Implementación de persistencia
+ * 
+ * @author bme(Bryan Ivan Marroquin)
  * @version 1.0
  */
 public interface PerfilRepository {
@@ -61,5 +59,10 @@ public interface PerfilRepository {
     boolean deleteById(BigInteger id);
 
 
+    /**
+     * Obtiene todos los perfiles.
+     *
+     * @return lista de perfiles
+     */
     List<Perfil> findAll();
 }

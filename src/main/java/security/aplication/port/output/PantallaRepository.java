@@ -7,34 +7,36 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Puerto de Salida: PantallaRepository
+ * Puerto de Salida (Output Port): PantallaRepository
  * 
- * Define contrato para operaciones de persistencia de pantallas.
- * Abstrae la tecnología de persistencia (JPA, MongoDB, etc).
+ * Define el contrato de persistencia para pantallas.
  * 
- * Patrón: Repository Pattern / Output Port (Hexagonal Architecture)
+ * Responsabilidad:
+ * 1. Proveer operaciones CRUD de pantallas
+ * 2. Abstraer la tecnología de persistencia
  * 
- * Responsabilidad: Definir métodos de acceso a datos para pantallas.
+ * Patrón: Repository / Output Port (Arquitectura Hexagonal)
  * 
- * Implementación: PantallaRepositoryAdapter en framework/output
+ * Flujo:
+ * UseCase → PantallaRepository → Implementación de persistencia
  * 
- * Métodos:
- * - save(Pantalla): Crear nueva pantalla
- * - findById(Long): Buscar por ID
- * - deleteById(Long): Eliminar por ID
- * - update(Long, Pantalla): Actualizar pantalla existente
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public interface PantallaRepository {
-    
     /**
      * Persiste una nueva pantalla en BD.
      * 
-     * @param pantalla Pantalla a crear
-     * @return Pantalla persistida con ID asignado
+     * @param pantalla pantalla a crear
+     * @return pantalla persistida con ID asignado
      */
     Pantalla save(Pantalla pantalla);
 
-
+    /**
+     * Obtiene todas las pantallas.
+     *
+     * @return lista de pantallas
+     */
     List<Pantalla> findAll();
     /**
      * Obtiene una pantalla por su ID.

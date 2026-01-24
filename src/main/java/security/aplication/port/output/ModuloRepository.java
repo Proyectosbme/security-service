@@ -1,18 +1,25 @@
 package security.aplication.port.output;
 
-
-
 import security.dominio.entidades.Modulo;
-
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Puerto de Salida (Output Port): ModuloRepository
- * Interface que define operaciones de persistencia para Módulos.
- * Arquitectura Hexagonal: lado de salida (secundario)
- * UseCase → ModuloRepository → JPA/Database
- * Implementación: ModuloRepositoryQuarkus (framework)
+ * 
+ * Define el contrato de persistencia para módulos.
+ * 
+ * Responsabilidad:
+ * 1. Proveer operaciones CRUD de módulos
+ * 2. Abstraer la tecnología de persistencia
+ * 
+ * Patrón: Repository / Output Port (Arquitectura Hexagonal)
+ * 
+ * Flujo:
+ * UseCase → ModuloRepository → Implementación de persistencia
+ * 
+ * @author bme(Bryan Ivan Marroquin)
+ * @version 1.0
  */
 public interface ModuloRepository {
     /**
