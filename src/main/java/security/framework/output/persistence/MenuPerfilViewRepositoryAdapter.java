@@ -33,13 +33,16 @@ public class MenuPerfilViewRepositoryAdapter implements MenuPerfilViewRepository
      * Mantiene la arquitectura hexagonal limpia.
      */
     private MenuPerfilView toDto(MenuPerfilViewEntity entity) {
+        Integer jerarq = entity.getJerarq() != null ? entity.getJerarq().intValue() : null;
+        Long menuPadre = entity.getMenuPadre() != null ? entity.getMenuPadre().longValue() : null;
+        Integer orden = entity.getOrden() != null ? entity.getOrden().intValue() : null;
         return new MenuPerfilView(
             entity.getId().getIdMenu(),
             entity.getId().getIdPerfil(),
             entity.getNombre(),
-            entity.getJerarq(),
-            entity.getMenuPadre(),
-            entity.getOrden(),
+            jerarq,
+            menuPadre,
+            orden,
             entity.getUrl()
         );
     }

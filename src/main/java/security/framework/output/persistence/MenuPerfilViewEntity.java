@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Immutable;
 
+import java.math.BigInteger;
+
 /**
  * Entidad JPA: MenuPerfilViewEntity
  * 
@@ -32,13 +34,13 @@ public class MenuPerfilViewEntity {
     private String nombre;
     
     @Column(name = "jerarq")
-    private Integer jerarq;
+    private BigInteger jerarq;
     
     @Column(name = "menu_padre")
-    private Long menuPadre;
+    private BigInteger menuPadre;
     
     @Column(name = "orden")
-    private Integer orden;
+    private BigInteger orden;
     
     @Column(name = "url")
     private String url;
