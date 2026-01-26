@@ -50,7 +50,7 @@ public class EliminarMenuPerfilUseCase {
     public void ejecutar(BigInteger menuId, BigInteger perfilId){
         if(menuId == null || perfilId == null){
             throw new SecurityNotFoundException(
-                    "No existe el menú " + menuId + " y perfil " + perfilId
+                    "No existe el menú " + menuId + " asigando al perfil " + perfilId
             );
         }
         MenuPerfil menuPerfil= new MenuPerfil(menuId, perfilId);
